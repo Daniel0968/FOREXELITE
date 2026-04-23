@@ -1,0 +1,1850 @@
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOREXELITE — Trading Profesional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Syne:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg0:#050610;--bg1:#0a0b1b;--bg2:#0e1022;--bg3:#13152b;
+  --gold:#f0a500;--gold2:#ffc62e;--glow:rgba(240,165,0,.1);
+  --green:#00c896;--red:#ff4560;--blue:#4e8fff;
+  --t1:#eef0ff;--t2:#9294b8;--t3:#484a68;
+  --b1:rgba(240,165,0,.13);--b2:rgba(255,255,255,.055);
+  --card:rgba(255,255,255,.022);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--t1);font-family:'Syne',sans-serif;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,165,0,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(240,165,0,.022) 1px,transparent 1px);background-size:55px 55px;pointer-events:none;z-index:0}
+h2{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,3vw,2.4rem);font-weight:700}
+button{font-family:'Syne',sans-serif;cursor:pointer}
+
+/* ===== NAVBAR ===== */
+#nb{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(5,6,16,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--b1);height:62px;display:flex;align-items:center;padding:0 1.5rem;gap:.8rem}
+#nb-logo{display:flex;align-items:center;gap:8px;font-family:'Orbitron',monospace;font-weight:900;font-size:.95rem;color:var(--gold);letter-spacing:.08em;flex-shrink:0;cursor:pointer}
+#nb-logo span{color:var(--t1)}
+#nb-links{display:flex;gap:.05rem;flex:1;justify-content:center;list-style:none}
+#nb-links a{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);padding:5px 9px;border-radius:6px;transition:all .18s;border:1px solid transparent;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap}
+#nb-links a:hover,#nb-links a.act{color:var(--gold);background:var(--glow);border-color:var(--b1)}
+#nb-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.btn{padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;transition:all .18s;letter-spacing:.04em;border:none}
+.btn-o{background:transparent;border:1px solid var(--b1);color:var(--t1)}
+.btn-o:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+.btn-g{background:var(--gold);color:var(--bg0);font-weight:800}
+.btn-g:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(240,165,0,.28)}
+.btn-r{background:var(--red);color:#fff}
+.btn-r:hover{opacity:.85}
+.av-wrap{position:relative;cursor:pointer;flex-shrink:0}
+.uav{width:33px;height:33px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--green));display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--bg0);border:2px solid var(--b1);overflow:hidden;user-select:none;font-family:'Orbitron',monospace}
+.uav.admin-av{background:linear-gradient(135deg,#e00,#f0a500)!important;color:#111!important}
+.uav img{width:100%;height:100%;object-fit:cover}
+.nbadge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:.54rem;font-weight:800;min-width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid var(--bg0);padding:0 2px;font-family:'JetBrains Mono',monospace}
+.admbdg{background:var(--gold);color:var(--bg0);font-size:.55rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.07em}
+
+/* ===== DROPDOWNS (News + Asistencia) ===== */
+.ndrop{position:fixed;top:97px;right:1.5rem;width:370px;max-height:470px;overflow-y:auto;background:var(--bg1);border:1px solid var(--b1);border-radius:14px;z-index:890;transform:translateY(-6px) scale(.97);opacity:0;pointer-events:none;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 20px 55px rgba(0,0,0,.75)}
+.ndrop.on{transform:none;opacity:1;pointer-events:all}
+.nd-hd{padding:.85rem 1.15rem .5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b2);position:sticky;top:0;background:var(--bg1);z-index:1;border-radius:14px 14px 0 0}
+.nd-t{font-family:'Orbitron',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.12em}
+.nd-cls{background:transparent;border:none;color:var(--t3);font-size:.82rem;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:all .14s}
+.nd-cls:hover{color:var(--gold)}
+.nd-empty{padding:1.6rem;text-align:center;color:var(--t3);font-size:.8rem}
+
+/* News items */
+.ni{padding:.85rem 1.15rem;border-bottom:1px solid var(--b2);cursor:pointer;transition:background .12s}
+.ni:hover{background:var(--glow)}:last-child{border-bottom:none}
+.ni-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:.18rem}
+.ni-ttl{font-size:.8rem;font-weight:600;color:var(--t1);line-height:1.4}
+.ni-meta{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.ni-unread{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0}
+.ni-date{font-size:.59rem;color:var(--t3);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.ni-prev{font-size:.74rem;color:var(--t2)}
+.ni-body{display:none;padding:.65rem 0 0;border-top:1px solid var(--b2);margin-top:.5rem}
+.ni-body.on{display:block}
+.ni-body img{width:100%;border-radius:7px;border:1px solid var(--b1);margin:.4rem 0}
+.ni-body p{font-size:.77rem;color:var(--t2);line-height:1.7;margin-bottom:.4rem}
+.ni-del{margin-top:.5rem;background:rgba(255,69,96,.07);border:1px solid rgba(255,69,96,.18);color:var(--red);padding:3px 10px;border-radius:5px;font-size:.63rem;font-weight:700}
+
+/* Asistencia tabs */
+.as-tabs{display:flex;border-bottom:1px solid var(--b2);position:sticky;top:45px;background:var(--bg1);z-index:1}
+.as-tab{flex:1;padding:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:none;background:transparent;cursor:pointer;transition:all .15s;border-bottom:2px solid transparent}
+.as-tab.act{color:var(--gold);border-bottom-color:var(--gold)}
+.as-tab:hover:not(.act){color:var(--t2)}
+.as-sec{padding:1rem 1.15rem;display:none}
+.as-sec.on{display:block}
+.as-sec p{font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.7rem}
+.as-sec h4{font-family:'Orbitron',monospace;font-size:.72rem;color:var(--gold);margin-bottom:.5rem;margin-top:.8rem}
+
+/* NAV dots */
+.ndot{background:var(--red);min-width:14px;height:14px;border-radius:50%;font-size:.56rem;font-weight:800;display:none;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;animation:npulse 2s infinite}
+@keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(255,69,96,.5)}60%{box-shadow:0 0 0 5px rgba(255,69,96,0)}}
+
+/* Search icon button */
+#srch-btn{background:transparent;border:1px solid var(--b1);color:var(--t2);width:32px;height:32px;border-radius:7px;font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+#srch-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+
+/* ===== SEARCH OVERLAY ===== */
+#srch-ov{position:fixed;inset:0;background:rgba(5,6,16,.97);z-index:2100;display:none;flex-direction:column;align-items:center;padding:5rem 1.5rem 3rem;overflow-y:auto}
+#srch-ov.on{display:flex}
+.srch-box{width:100%;max-width:680px;position:relative;margin-bottom:2rem}
+.srch-box input{width:100%;background:var(--bg1);border:1px solid var(--gold);border-radius:12px;padding:14px 50px 14px 18px;color:var(--t1);font-family:'Syne',sans-serif;font-size:1rem;outline:none}
+.srch-box input::placeholder{color:var(--t3)}
+.srch-cls{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--t3);font-size:1.1rem;cursor:pointer;transition:color .15s}
+.srch-cls:hover{color:var(--gold)}
+#srch-res{width:100%;max-width:680px;display:flex;flex-direction:column;gap:12px}
+.sr-card{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;padding:1.1rem 1.3rem;cursor:pointer;transition:border-color .15s}
+.sr-card:hover{border-color:var(--gold)}
+.sr-sec{font-size:.6rem;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem}
+.sr-ttl{font-size:.9rem;font-weight:600;color:var(--t1);margin-bottom:.25rem}
+.sr-snip{font-size:.78rem;color:var(--t2)}
+.sr-zero{text-align:center;color:var(--t3);font-size:.92rem;padding:2rem 0}
+.srch-back{margin-top:2rem;background:transparent;border:1px solid var(--b1);color:var(--t2);padding:10px 28px;border-radius:9px;font-size:.82rem;font-weight:700;transition:all .15s}
+.srch-back:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ===== TICKER ===== */
+#ticker{background:var(--bg1);border-bottom:1px solid var(--b1);overflow:hidden;position:fixed;top:62px;left:0;right:0;z-index:880;height:32px;display:flex;align-items:center}
+.tk-outer{overflow:hidden;width:100%;height:100%;display:flex;align-items:center}
+.tk-track{display:flex;align-items:center;gap:0;animation:tkScroll 55s linear infinite;white-space:nowrap;will-change:transform}
+@keyframes tkScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk-i{font-family:'JetBrains Mono',monospace;font-size:.69rem;color:var(--t2);display:inline-flex;gap:7px;align-items:center;padding:0 1.8rem;border-right:1px solid var(--b2)}
+.tk-i .p{color:var(--t1);font-weight:700}.tk-i .u{color:var(--green)}.tk-i .d{color:var(--red)}
+
+/* ===== HERO ===== */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:100px}
+#hcv{position:absolute;inset:0;opacity:.42}
+.hc{position:relative;z-index:1;text-align:center;padding:2rem;max-width:880px}
+.hbadge{display:inline-flex;align-items:center;gap:7px;background:var(--glow);border:1px solid var(--b1);border-radius:100px;padding:5px 16px;font-size:.69rem;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-bottom:1.8rem;animation:fuIn .8s ease both}
+.hbadge::before{content:'●';font-size:.4rem;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.22}}
+.htit{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.7rem);font-weight:900;line-height:1.08;animation:fuIn .8s .1s ease both;margin-bottom:1.3rem}
+.htit .l1{display:block;color:var(--t1)}.htit .l2{display:block;color:var(--gold)}
+.hsub{font-size:.98rem;color:var(--t2);max-width:560px;margin:0 auto 2.3rem;animation:fuIn .8s .2s ease both}
+.hcta{display:flex;gap:.85rem;justify-content:center;animation:fuIn .8s .3s ease both}
+.hstats{display:flex;gap:2.6rem;justify-content:center;margin-top:3.6rem;animation:fuIn .8s .4s ease both}
+.hs-num{font-family:'Orbitron',monospace;font-size:1.65rem;font-weight:700;color:var(--gold)}
+.hs-lbl{font-size:.67rem;color:var(--t2);letter-spacing:.1em;text-transform:uppercase}
+.scroll-hint{position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--t3);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase}
+.sline{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2s infinite}
+@keyframes spulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.001%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fuIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== SECTIONS ===== */
+section:not(#hero){position:relative;z-index:1;padding:100px 0}
+.ctr{max-width:1160px;margin:0 auto;padding:0 2rem}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:9px;margin-bottom:.65rem}
+.stag::before{content:'';width:24px;height:1px;background:var(--gold)}
+.shd{margin-bottom:3rem}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.12;position:relative;z-index:1}
+
+/* ===== WIKI ARTICLES ===== */
+.ww{max-width:900px}
+.wa{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:2.1rem;margin-bottom:1.5rem;position:relative;transition:border-color .18s}
+.wa:hover{border-color:var(--b1)}
+.wa h3{font-family:'Orbitron',monospace;font-size:.94rem;color:var(--gold);margin-bottom:.85rem;padding-bottom:.65rem;border-bottom:1px solid var(--b1)}
+.wa p{color:var(--t2);margin-bottom:.8rem;line-height:1.88}
+.wa img{max-width:100%;border-radius:9px;border:1px solid var(--b1);margin:1rem 0;display:block}
+.wa .cap{font-size:.71rem;color:var(--t3);text-align:center;font-family:'JetBrains Mono',monospace;margin-top:-.35rem;margin-bottom:1rem}
+.artbtns{position:absolute;top:.85rem;right:.85rem;display:none;gap:6px}
+body.adm .artbtns{display:flex}
+.eb{background:var(--glow);border:1px solid var(--b1);color:var(--gold);padding:3px 10px;border-radius:5px;font-size:.64rem;font-weight:700;transition:all .15s}
+.eb:hover{background:rgba(240,165,0,.18)}
+.db{background:rgba(255,69,96,.07);border:1px solid rgba(255,69,96,.18);color:var(--red);padding:3px 10px;border-radius:5px;font-size:.64rem;font-weight:700;transition:all .15s}
+.db:hover{background:rgba(255,69,96,.14)}
+.add-a{width:100%;border:2px dashed var(--b1);background:transparent;color:var(--t3);padding:1.5rem;border-radius:12px;font-size:.86rem;transition:all .18s;display:none}
+.add-a:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+body.adm .add-a{display:block}
+
+/* ===== PSYCH ===== */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1.35rem;margin-bottom:1.35rem}
+.pc{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:1.75rem;position:relative;transition:transform .2s,border-color .2s}
+.pc:hover{transform:translateY(-3px);border-color:var(--b1)}
+.pc .ico{font-size:1.7rem;margin-bottom:.65rem}
+.pc h3{font-family:'Orbitron',monospace;font-size:.86rem;color:var(--gold);margin-bottom:.5rem}
+.pc p{color:var(--t2);font-size:.84rem}
+.add-c{border:2px dashed var(--b1);background:transparent;border-radius:14px;padding:1.75rem;color:var(--t3);font-family:'Syne',sans-serif;transition:all .18s;display:none;flex-direction:column;gap:6px;align-items:center;justify-content:center;width:100%;min-height:135px}
+.add-c:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+body.adm .add-c{display:flex}
+
+/* ===== BT ===== */
+.btg{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.75rem;margin-bottom:1.35rem}
+.btc{background:var(--card);border:1px solid var(--b2);border-radius:14px;overflow:hidden;position:relative;transition:transform .2s,border-color .2s}
+.btc:hover{transform:translateY(-3px);border-color:var(--b1)}
+.bti{width:100%;height:180px;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bti img{width:100%;height:100%;object-fit:cover}
+.bti-ph{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.73rem}
+.btb{padding:1.3rem}
+.btm{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem}
+.bttag{font-size:.59rem;font-family:'JetBrains Mono',monospace;padding:2px 9px;border-radius:100px;border:1px solid var(--b1);color:var(--gold)}
+.bttag.g{color:var(--green);border-color:rgba(0,200,150,.2)}.bttag.r{color:var(--red);border-color:rgba(255,69,96,.2)}
+.btc h3{font-size:.9rem;color:var(--t1);margin-bottom:.32rem}
+.btc p{color:var(--t2);font-size:.8rem;line-height:1.68}
+.add-bt{border:2px dashed var(--b1);background:transparent;border-radius:14px;padding:2.4rem 2rem;color:var(--t3);font-family:'Syne',sans-serif;transition:all .18s;display:none;flex-direction:column;gap:6px;align-items:center;justify-content:center;width:100%}
+.add-bt:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+body.adm .add-bt{display:flex}
+
+/* ===== FOOTER ===== */
+footer{background:var(--bg1);border-top:1px solid var(--b1);padding:2.5rem 0;text-align:center;color:var(--t3);font-size:.79rem;position:relative;z-index:1}
+.flogo{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Orbitron',monospace;font-weight:900;color:var(--gold);font-size:1rem;margin-bottom:.65rem}
+
+/* ===== MODALS ===== */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.87);backdrop-filter:blur(12px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s;padding:1rem}
+.ov.on{opacity:1;pointer-events:all}
+.mb{background:var(--bg1);border:1px solid var(--b1);border-radius:18px;padding:2.1rem;width:100%;max-width:430px;position:relative;transform:translateY(16px);transition:transform .18s;max-height:92vh;overflow-y:auto}
+.ov.on .mb{transform:none}
+.mb.wd{max-width:580px}.mb.xl{max-width:800px}
+.mcl{position:absolute;top:.85rem;right:.85rem;background:transparent;border:none;color:var(--t3);font-size:.95rem;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;transition:all .14s;z-index:2}
+.mcl:hover{background:var(--glow);color:var(--gold)}
+.mt{font-family:'Orbitron',monospace;font-size:.92rem;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;padding-right:2rem;line-height:1.4}
+.fg{margin-bottom:.95rem}
+.fg label{display:block;font-size:.67rem;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.32rem;font-weight:700}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:10px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.87rem;outline:none;transition:border-color .16s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--t3)}
+.fg textarea{resize:vertical;min-height:105px;line-height:1.7}
+.fg select{cursor:pointer;background:var(--bg2)}
+.imgrow{display:flex;gap:6px}
+.imgrow input{flex:1;min-width:0}
+.uplbl{flex-shrink:0;background:var(--glow);border:1px solid var(--b1);color:var(--gold);padding:10px 11px;border-radius:9px;font-size:.7rem;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:4px;transition:background .14s}
+.uplbl:hover{background:rgba(240,165,0,.18)}
+.uplbl input[type=file]{display:none}
+.iprev{width:100%;max-height:120px;object-fit:cover;border-radius:7px;border:1px solid var(--b1);margin-top:.4rem;display:none}
+.gbtn{width:100%;background:#fff;color:#333;border:none;border-radius:9px;padding:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:.84rem;font-weight:600;font-family:'Syne',sans-serif;margin-bottom:1.2rem;transition:opacity .16s}
+.gbtn:hover{opacity:.9}
+.dvd{display:flex;align-items:center;gap:.85rem;margin-bottom:1.2rem;color:var(--t3);font-size:.74rem}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px;background:var(--b2)}
+.ml{text-align:center;font-size:.79rem;color:var(--t2);margin-top:.8rem}
+.ml a{color:var(--gold);cursor:pointer}.ml a:hover{text-decoration:underline}
+.er{color:var(--red);font-size:.71rem;margin-top:.32rem;display:none;line-height:1.5}
+
+/* ===== PROFILE PAGE ===== */
+#pp{position:fixed;inset:0;background:var(--bg0);z-index:1400;overflow-y:auto;transform:translateX(102%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
+#pp.on{transform:none}
+.pp-hd{background:rgba(10,11,27,.95);border-bottom:1px solid var(--b1);padding:0 1.7rem;height:58px;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.pp-bk{background:transparent;border:1px solid var(--b1);color:var(--t2);width:33px;height:33px;border-radius:7px;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .16s}
+.pp-bk:hover{border-color:var(--gold);color:var(--gold)}
+.pp-bd{max-width:760px;margin:0 auto;padding:2.3rem 2rem 5rem}
+
+/* Profile top: left (username/pw) + right (avatar) */
+.pp-top{display:flex;gap:1.75rem;margin-bottom:2rem;align-items:flex-start}
+.pp-left{flex:1;min-width:0}
+.pp-right{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:.65rem}
+.pp-av{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;color:var(--bg0);overflow:hidden;border:3px solid var(--b1);font-family:'Orbitron',monospace}
+.pp-av.adm-av{background:linear-gradient(135deg,#dd0000,#f0a500)!important}
+.pp-av img{width:100%;height:100%;object-fit:cover}
+.pp-un{font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--t1);font-weight:900;margin-bottom:.15rem}
+.pp-jn{font-size:.67rem;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.pp-sec{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem}
+.pp-sec h3{font-family:'Orbitron',monospace;font-size:.77rem;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap;cursor:pointer;user-select:none}
+.pp-sec h3 .tog{font-size:.7rem;color:var(--t3);transition:transform .2s}
+.pp-sec h3 .tog.open{transform:rotate(180deg)}
+.pp-sec-body{display:block}
+.pp-sec-body.coll{display:none}
+.pp-sec textarea{width:100%;background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:10px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.87rem;outline:none;resize:vertical;min-height:85px;line-height:1.7;transition:border-color .16s}
+.pp-sec textarea:focus{border-color:var(--gold)}
+
+/* Inbox */
+.ib-list{display:flex;flex-direction:column;gap:8px}
+.ib-msg{background:var(--bg2);border:1px solid var(--b2);border-radius:11px;padding:.85rem 1.05rem;transition:border-color .16s}
+.ib-msg.unr{border-color:rgba(240,165,0,.3);background:rgba(240,165,0,.025)}
+.im-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.28rem}
+.im-fr{font-size:.74rem;font-weight:700;color:var(--gold)}
+.im-dt{font-size:.59rem;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.im-tx{color:var(--t2);font-size:.84rem;line-height:1.6}
+.im-reps{margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--b2);display:flex;flex-direction:column;gap:4px}
+.rep-it{font-size:.74rem;display:flex;gap:5px}
+.rep-fr{font-weight:700}.rep-fr.adm{color:var(--gold)}.rep-fr.me{color:var(--green)}
+.rep-tx{color:var(--t2)}
+.im-rr{margin-top:.65rem;display:flex;gap:6px}
+.im-rr input{flex:1;background:var(--bg0);border:1px solid var(--b2);border-radius:7px;padding:7px 10px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.79rem;outline:none;transition:border-color .15s}
+.im-rr input:focus{border-color:var(--gold)}
+.im-rr button{background:var(--gold);border:none;color:var(--bg0);padding:7px 12px;border-radius:7px;font-size:.7rem;font-weight:700;white-space:nowrap}
+
+/* Admin panel */
+.ap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
+.ap-box{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:.75rem}
+.ap-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;color:var(--gold)}
+.ap-k{font-size:.63rem;color:var(--t3)}
+.urow{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:7px 10px;display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.uav-s{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--green));display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;color:var(--bg0);flex-shrink:0;overflow:hidden;font-family:'Orbitron',monospace}
+.uav-s img{width:100%;height:100%;object-fit:cover}
+.ui{flex:1;min-width:0}
+.un{font-size:.78rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ut{font-size:.62rem;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.odot{width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0;animation:blink 2s infinite}
+.ap-btn{width:100%;padding:9px 12px;border-radius:9px;font-size:.78rem;font-weight:700;transition:all .16s;margin-bottom:6px;text-align:left;display:flex;align-items:center;gap:8px;border:none}
+.ap-btn.inf{border:1px solid var(--b1);color:var(--t2);background:transparent}
+.ap-btn.inf:hover{border-color:var(--gold);color:var(--gold);background:var(--glow)}
+.ap-btn.wrn{border:1px solid rgba(255,165,0,.26);color:orange;background:rgba(255,165,0,.04)}
+.ap-btn.wrn:hover{background:rgba(255,165,0,.1)}
+.ap-btn.dng{border:1px solid rgba(255,69,96,.25);color:var(--red);background:rgba(255,69,96,.03)}
+.ap-btn.dng:hover{background:rgba(255,69,96,.09)}
+.sm-btn{background:var(--glow);border:1px solid var(--b1);color:var(--gold);padding:2px 7px;border-radius:5px;font-size:.62rem;font-weight:700;flex-shrink:0}
+.dl-btn{background:rgba(255,69,96,.06);border:1px solid rgba(255,69,96,.18);color:var(--red);padding:2px 7px;border-radius:5px;font-size:.62rem;font-weight:700;flex-shrink:0}
+
+/* Code editor */
+#code-ta{width:100%;min-height:250px;background:#040508;border:1px solid var(--b1);border-radius:9px;padding:10px;color:#7df5a0;font-family:'JetBrains Mono',monospace;font-size:.69rem;resize:vertical;outline:none;line-height:1.6}
+
+/* Maintenance */
+#maint{position:fixed;inset:0;background:var(--bg0);z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.05rem;text-align:center;padding:2rem}
+.ml-inp{background:var(--bg2);border:1px solid var(--b1);border-radius:7px;padding:9px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.87rem;outline:none;width:145px}
+
+/* Toast */
+#toast{position:fixed;bottom:1.7rem;right:1.7rem;background:var(--bg1);border:1px solid var(--gold);border-radius:11px;padding:.8rem 1.25rem;z-index:9999;font-size:.84rem;transform:translateX(260%);transition:transform .27s;max-width:290px;line-height:1.5;pointer-events:none}
+#toast.on{transform:none}
+
+/* FIU */
+.fiu{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
+.fiu.vis{opacity:1;transform:none}
+
+/* Collapsible toggle */
+.coll-hd{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:.5rem 0;border-bottom:1px solid var(--b2);margin-bottom:.7rem}
+.coll-hd span{font-size:.63rem;color:var(--t3);letter-spacing:.13em;text-transform:uppercase}
+.coll-arr{font-size:.7rem;color:var(--t3);transition:transform .2s}
+.coll-arr.open{transform:rotate(180deg)}
+.coll-body{overflow:hidden}
+
+/* Contact form in asistencia */
+.contact-form input,.contact-form textarea{width:100%;background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:10px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.86rem;outline:none;margin-bottom:.7rem;transition:border-color .15s}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--gold)}
+.contact-form textarea{resize:vertical;min-height:90px;line-height:1.7}
+
+/* API status */
+.api-st{font-size:.6rem;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:4px;margin-left:.5rem}
+.api-live{background:rgba(0,200,150,.1);color:var(--green);border:1px solid rgba(0,200,150,.2)}
+.api-est{background:rgba(240,165,0,.1);color:var(--gold);border:1px solid rgba(240,165,0,.2)}
+
+@media(max-width:760px){
+  #nb-links{display:none}
+  .hstats{gap:1.3rem}
+  .btg{grid-template-columns:1fr}
+  .ndrop{width:calc(100vw - 2rem);right:.6rem}
+  .pp-top{flex-direction:column-reverse;align-items:center}
+  .pp-right{align-items:center}
+  .ap-grid{grid-template-columns:1fr}
+  #srch-ov{padding:4rem 1rem 2rem}
+}
+</style>
+</head>
+<body class="adm">
+
+<!-- SVG SYMBOL -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="fe-logo" viewBox="0 0 52 52">
+    <polygon points="26,4 48,44 4,44" fill="none" stroke="#f0a500" stroke-width="3.2" stroke-linejoin="round"></polygon>
+    <line x1="4" y1="44" x2="48" y2="44" stroke="#f0a500" stroke-width="3.2" stroke-linecap="round"></line>
+    <polyline points="11,40 19,26 25,33 33,16 42,24" fill="none" stroke="#00c896" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  </symbol>
+</svg>
+
+<!-- ===== MANTENIMIENTO ===== -->
+<div id="maint">
+  <svg width="80" height="80" viewBox="0 0 52 52"><use href="#fe-logo"></use></svg>
+  <div style="font-family:'Orbitron',monospace;font-size:1.5rem;color:var(--gold);font-weight:900;letter-spacing:.08em">FOREXELITE</div>
+  <div style="font-family:'Orbitron',monospace;font-size:.85rem;color:var(--t2);letter-spacing:.13em;display:flex;align-items:center;gap:7px"><span style="animation:blink 1.5s infinite;color:var(--red)">●</span>EN MANTENIMIENTO</div>
+  <p id="maint-msg" style="color:var(--t2);max-width:420px;font-size:.88rem;line-height:1.75">La plataforma está temporalmente fuera de servicio. Regresamos pronto.</p>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--t3)">Solo FX1000 puede acceder durante el mantenimiento</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:.4rem">
+    <input id="ml-u" class="ml-inp" placeholder="Usuario admin">
+    <input id="ml-p" class="ml-inp" type="password" placeholder="Contraseña">
+    <button class="btn btn-g" onclick="maintLogin()">Acceder</button>
+  </div>
+  <div id="ml-err" style="color:var(--red);font-size:.73rem;display:none">Credenciales incorrectas</div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="nb">
+  <div id="nb-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="25" height="25" viewBox="0 0 52 52"><use href="#fe-logo"></use></svg>
+    FOREX<span>ELITE</span>
+  </div>
+  <ul id="nb-links">
+    <li><a href="#s-tec" data-s="s-tec" class="act">Análisis Técnico</a></li>
+    <li><a href="#s-ins" data-s="s-ins" class="">Análisis Institucional</a></li>
+    <li><a href="#s-psy" data-s="s-psy" class="">Psicología</a></li>
+    <li><a href="#s-bt" data-s="s-bt" class="">Backtesting</a></li>
+    <li><a id="nb-news-btn" onclick="toggleDrop('news',event)">Noticias <span class="ndot" id="ndot-news" style="display: none;"></span></a></li>
+    <li><a id="nb-asist-btn" onclick="toggleDrop('asist',event)">Asistencia <span class="ndot" id="ndot-asist" style="display:none"></span></a></li>
+  </ul>
+  <div id="nb-right">
+    <button id="srch-btn" onclick="openSearch()" title="Buscar">🔍</button>
+    <div id="guest-ui" style="display: none; gap: 8px;">
+      <button class="btn btn-o" onclick="openM('login')">Iniciar Sesión</button>
+      <button class="btn btn-g" onclick="openM('reg')">Registrarse</button>
+    </div>
+    <div id="user-ui" style="display: flex; align-items: center; gap: 8px;">
+      <span id="unm-disp" style="font-size:.77rem;color:var(--t2);max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">FX1000</span>
+      <span id="adm-bdg" class="admbdg" style="display: inline;">ADMIN</span>
+      <div class="av-wrap" onclick="openProfile()" title="Mi Perfil">
+        <div class="uav admin-av" id="av-el">FX</div>
+        <div class="nbadge" id="nb-notif" style="display: none;"></div>
+      </div>
+      <button class="btn btn-o" onclick="logout()" style="font-size:.7rem;padding:5px 10px">Salir</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== NEWS DROPDOWN ===== -->
+<div class="ndrop" id="drop-news">
+  <div class="nd-hd">
+    <span class="nd-t">📡 NOTICIAS</span>
+    <button class="nd-cls" onclick="closeDrop('news')">✕</button>
+  </div>
+  <div id="news-list"><div class="nd-empty">Aún no hay noticias.<br>FX1000 publicará novedades aquí.</div></div>
+</div>
+
+<!-- ===== ASISTENCIA DROPDOWN ===== -->
+<div class="ndrop" id="drop-asist" style="width:410px">
+  <div class="nd-hd">
+    <span class="nd-t">📚 ASISTENCIA</span>
+    <button class="nd-cls" onclick="closeDrop('asist')">✕</button>
+  </div>
+  <div class="as-tabs">
+    <button class="as-tab" id="tab-how" onclick="switchAsTab('how')">Cómo funciona</button>
+    <button class="as-tab" id="tab-rules" onclick="switchAsTab('rules')">Reglas</button>
+    <button class="as-tab act" id="tab-contact" onclick="switchAsTab('contact')">Contactar</button>
+  </div>
+  <div class="as-sec" id="as-how"><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">ForexElite es una plataforma educativa de trading Forex.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Análisis Técnico:** Aprende patrones de precio, indicadores y estrategias clásicas con artículos detallados.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Análisis Institucional:** Descubre cómo operan los grandes actores del mercado: Order Blocks, FVGs, liquidez y estructura de mercado.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Psicología de Mercado:** La parte mental del trading. Control emocional, disciplina, gestión del riesgo y mentalidad ganadora.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Backtesting:** Registro real de operaciones con análisis de qué funcionó y qué no. Aprende de los errores.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Noticias:** FX1000 publica novedades y actualizaciones de la plataforma.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">**Cómo empezar:** Regístrate gratis, explora las secciones y si tienes dudas usa la pestaña Contactar.</p></div>
+  <div class="as-sec" id="as-rules"><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">Reglas de uso de ForexElite</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">1. INFORMACIÓN EDUCATIVA: Todo el contenido de esta plataforma es exclusivamente educativo. No constituye asesoramiento financiero. Invierte siempre bajo tu propia responsabilidad.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">2. RESPETO: Trata a todos los miembros con respeto. No se tolerará ningún tipo de acoso, insulto o comportamiento tóxico.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">3. NO SPAM: Queda prohibido el envío de mensajes publicitarios, cadenas o contenido no relacionado con el trading Forex.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">4. INFORMACIÓN VERAZ: No difundas información falsa o engañosa sobre el mercado que pueda perjudicar a otros usuarios.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">5. PRIVACIDAD: No compartas datos personales de otros usuarios sin su consentimiento.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">6. CUMPLIMIENTO LEGAL: El uso de la plataforma debe cumplir con la legislación vigente. Queda prohibido cualquier uso ilícito.</p><p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">El incumplimiento de estas normas puede suponer la eliminación de tu cuenta sin previo aviso.</p></div>
+  <div class="as-sec on" id="as-contact">
+    <h4 style="font-family:'Orbitron',monospace;font-size:.72rem;color:var(--gold);margin-bottom:.8rem">Contactar con el Administrador</h4>
+    <div class="contact-form" id="contact-form-inner"><p style="color:var(--t3);font-size:.78rem">Eres el administrador.</p></div>
+  </div>
+</div>
+
+<!-- ===== TICKER ===== -->
+<div id="ticker"><div class="tk-outer"><div class="tk-track" id="tk"><span class="tk-i" data-pair="EUR/USD"><span class="p">EUR/USD</span><span class="tv">1.1724</span><span class="u tc">+0.009%</span></span><span class="tk-i" data-pair="GBP/USD"><span class="p">GBP/USD</span><span class="tv">1.3504</span><span class="d tc">-0.007%</span></span><span class="tk-i" data-pair="USD/JPY"><span class="p">USD/JPY</span><span class="tv">159.37</span><span class="d tc">-0.003%</span></span><span class="tk-i" data-pair="USD/CHF"><span class="p">USD/CHF</span><span class="tv">0.7836</span><span class="u tc">+0.000%</span></span><span class="tk-i" data-pair="AUD/USD"><span class="p">AUD/USD</span><span class="tv">0.7159</span><span class="u tc">+0.004%</span></span><span class="tk-i" data-pair="USD/CAD"><span class="p">USD/CAD</span><span class="tv">1.3664</span><span class="u tc">+0.011%</span></span><span class="tk-i" data-pair="NZD/USD"><span class="p">NZD/USD</span><span class="tv">0.5906</span><span class="u tc">+0.001%</span></span><span class="tk-i" data-pair="EUR/GBP"><span class="p">EUR/GBP</span><span class="tv">0.8682</span><span class="u tc">+0.014%</span></span><span class="tk-i" data-pair="EUR/JPY"><span class="p">EUR/JPY</span><span class="tv">186.90</span><span class="u tc">+0.010%</span></span><span class="tk-i" data-pair="GBP/JPY"><span class="p">GBP/JPY</span><span class="tv">215.23</span><span class="d tc">-0.001%</span></span><span class="tk-i" data-pair="EUR/CHF"><span class="p">EUR/CHF</span><span class="tv">0.9189</span><span class="u tc">+0.004%</span></span><span class="tk-i" data-pair="AUD/JPY"><span class="p">AUD/JPY</span><span class="tv">114.11</span><span class="d tc">-0.004%</span></span><span class="tk-i" data-pair="EUR/AUD"><span class="p">EUR/AUD</span><span class="tv">1.6380</span><span class="u tc">+0.005%</span></span><span class="tk-i" data-pair="GBP/CHF"><span class="p">GBP/CHF</span><span class="tv">1.0582</span><span class="d tc">-0.007%</span></span><span class="tk-i" data-pair="CAD/JPY"><span class="p">CAD/JPY</span><span class="tv">116.68</span><span class="u tc">+0.001%</span></span><span class="tk-i" data-pair="CHF/JPY"><span class="p">CHF/JPY</span><span class="tv">203.34</span><span class="d tc">-0.013%</span></span><span class="tk-i" data-pair="EUR/USD"><span class="p">EUR/USD</span><span class="tv">1.1724</span><span class="u tc">+0.009%</span></span><span class="tk-i" data-pair="GBP/USD"><span class="p">GBP/USD</span><span class="tv">1.3504</span><span class="d tc">-0.007%</span></span><span class="tk-i" data-pair="USD/JPY"><span class="p">USD/JPY</span><span class="tv">159.37</span><span class="d tc">-0.003%</span></span><span class="tk-i" data-pair="USD/CHF"><span class="p">USD/CHF</span><span class="tv">0.7836</span><span class="u tc">+0.000%</span></span><span class="tk-i" data-pair="AUD/USD"><span class="p">AUD/USD</span><span class="tv">0.7159</span><span class="u tc">+0.004%</span></span><span class="tk-i" data-pair="USD/CAD"><span class="p">USD/CAD</span><span class="tv">1.3664</span><span class="u tc">+0.011%</span></span><span class="tk-i" data-pair="NZD/USD"><span class="p">NZD/USD</span><span class="tv">0.5906</span><span class="u tc">+0.001%</span></span><span class="tk-i" data-pair="EUR/GBP"><span class="p">EUR/GBP</span><span class="tv">0.8682</span><span class="u tc">+0.014%</span></span><span class="tk-i" data-pair="EUR/JPY"><span class="p">EUR/JPY</span><span class="tv">186.90</span><span class="u tc">+0.010%</span></span><span class="tk-i" data-pair="GBP/JPY"><span class="p">GBP/JPY</span><span class="tv">215.23</span><span class="d tc">-0.001%</span></span><span class="tk-i" data-pair="EUR/CHF"><span class="p">EUR/CHF</span><span class="tv">0.9189</span><span class="u tc">+0.004%</span></span><span class="tk-i" data-pair="AUD/JPY"><span class="p">AUD/JPY</span><span class="tv">114.11</span><span class="d tc">-0.004%</span></span><span class="tk-i" data-pair="EUR/AUD"><span class="p">EUR/AUD</span><span class="tv">1.6380</span><span class="u tc">+0.005%</span></span><span class="tk-i" data-pair="GBP/CHF"><span class="p">GBP/CHF</span><span class="tv">1.0582</span><span class="d tc">-0.007%</span></span><span class="tk-i" data-pair="CAD/JPY"><span class="p">CAD/JPY</span><span class="tv">116.68</span><span class="u tc">+0.001%</span></span><span class="tk-i" data-pair="CHF/JPY"><span class="p">CHF/JPY</span><span class="tv">203.34</span><span class="d tc">-0.013%</span></span></div></div></div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <canvas id="hcv" width="1536" height="738"></canvas>
+  <div class="hc">
+    <div class="hbadge">PLATAFORMA DE TRADING PROFESIONAL</div>
+    <h1 class="htit"><span class="l1">Domina el mercado</span><span class="l2">de Forex</span></h1>
+    <p class="hsub">Análisis técnico, institucional, psicología de mercado y backtesting en una sola plataforma. Conocimiento ilimitado para traders serios.</p>
+    <div class="hcta">
+      <button class="btn btn-g" onclick="openM('reg')" style="padding:12px 28px;font-size:.91rem">Acceso Gratuito</button>
+      <button class="btn btn-o" onclick="s2('s-tec')" style="padding:12px 28px;font-size:.91rem">Ver Contenido</button>
+    </div>
+    <div class="hstats">
+      <div><div class="hs-num" id="h-u">249</div><div class="hs-lbl">Traders Activos</div></div>
+      <div><div class="hs-num" id="h-s">2571</div><div class="hs-lbl">Setups Analizados</div></div>
+      <div><div class="hs-num">100%</div><div class="hs-lbl">Gratuito</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="sline"></div>scroll</div>
+</section>
+<div class="sdiv"></div>
+
+<section id="s-tec">
+  <div class="ctr">
+    <div class="shd fiu vis"><div class="stag">01 — Análisis Técnico</div><h2>Patrones, Indicadores<br>y Estrategias</h2></div>
+    <div class="ww" id="tec-wrap">
+    <div class="wa fiu vis">
+      <div class="artbtns">
+        <button class="eb" onclick="oEditArt('tec',1)">✏ Editar</button>
+        <button class="db" onclick="delArt('tec',1)">🗑 Eliminar</button>
+      </div>
+      <h3>Soportes y Resistencias</h3>
+      
+      
+      <p>Los soportes y resistencias son niveles de precio clave donde el mercado tiende a reaccionar de forma repetida. Un soporte es un nivel donde la presión compradora supera a la vendedora, provocando un rebote al alza. Una resistencia funciona de forma inversa.</p><p>Estos niveles se forman porque la memoria del mercado es colectiva: los participantes recuerdan dónde el precio reaccionó anteriormente y tienden a repetir ese comportamiento. Cuantas más veces se haya respetado un nivel, más significativo es.</p><p>Para identificarlos correctamente, busca zonas donde el precio haya tenido múltiples toques. Una zona es más fiable que una línea exacta. El timeframe en el que se forma también determina su importancia: un S/R en diario es más relevante que uno en 5 minutos.</p>
+    </div>
+    <div class="wa fiu vis">
+      <div class="artbtns">
+        <button class="eb" onclick="oEditArt('tec',2)">✏ Editar</button>
+        <button class="db" onclick="delArt('tec',2)">🗑 Eliminar</button>
+      </div>
+      <h3>Medias Móviles</h3>
+      
+      
+      <p>Las medias móviles calculan el precio promedio durante un período determinado, suavizando el ruido del mercado y permitiendo identificar la dirección de la tendencia con mayor claridad.</p><p>Las más utilizadas son la EMA 20 (tendencia corto plazo), EMA 50 (tendencia media) y SMA 200 (tendencia principal). Cuando el precio cotiza por encima de la SMA 200, el mercado está en tendencia alcista de largo plazo.</p><p>El cruce de medias —cuando la EMA rápida cruza la EMA lenta— genera señales de posible cambio de tendencia. También actúan como soportes y resistencias dinámicas.</p>
+    </div></div>
+    <button class="add-a" onclick="oAddArt('tec')">+ Añadir nuevo artículo</button>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<section id="s-ins">
+  <div class="ctr">
+    <div class="shd fiu vis"><div class="stag">02 — Análisis Institucional</div><h2>Smart Money, Flujos<br>y Manipulación</h2></div>
+    <div class="ww" id="ins-wrap">
+    <div class="wa fiu vis">
+      <div class="artbtns">
+        <button class="eb" onclick="oEditArt('ins',1)">✏ Editar</button>
+        <button class="db" onclick="delArt('ins',1)">🗑 Eliminar</button>
+      </div>
+      <h3>Order Blocks (OB)</h3>
+      
+      
+      <p>Los Order Blocks son zonas de precio donde los participantes institucionales han ejecutado grandes órdenes, dejando un desequilibrio que el mercado eventualmente viene a corregir.</p><p>Un Bullish OB se forma como la última vela bajista antes de un impulso alcista significativo. Un Bearish OB es la última vela alcista antes de un impulso bajista fuerte. Cuando el precio regresa a estas zonas, los institucionales tienden a añadir más posiciones, generando una reacción predecible.</p><p>La clave está en combinar el OB con confluencias: zonas premium/discount, liquidez previa barrida y estructura de mercado favorable (BOS o CHoCH en timeframe superior).</p>
+    </div>
+    <div class="wa fiu vis">
+      <div class="artbtns">
+        <button class="eb" onclick="oEditArt('ins',2)">✏ Editar</button>
+        <button class="db" onclick="delArt('ins',2)">🗑 Eliminar</button>
+      </div>
+      <h3>Fair Value Gaps (FVG)</h3>
+      
+      
+      <p>Un Fair Value Gap es un desequilibrio en el precio creado cuando el mercado se mueve tan rápido que deja un espacio entre velas consecutivas, una zona de ineficiencia sin transacciones reales.</p><p>El mercado tiende a rellenar estos gaps para equilibrar la oferta y la demanda. Los FVG son más fiables cuando aparecen después de una ruptura de estructura (BOS) y están alineados con la tendencia principal. Se pueden usar como zonas de entrada de alta precisión cuando coinciden con un OB.</p>
+    </div></div>
+    <button class="add-a" onclick="oAddArt('ins')">+ Añadir nuevo artículo</button>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<section id="s-psy">
+  <div class="ctr">
+    <div class="shd fiu vis"><div class="stag">03 — Psicología de Mercado</div><h2>Mentalidad, Disciplina<br>y Control</h2></div>
+    <div class="pg" id="psy-wrap">
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(1)">✏ Editar</button><button class="db" onclick="delPsy(1)">🗑</button></div>
+      <div class="ico">🧠</div>
+      <h3>Control Emocional</h3>
+      <p>El miedo y la codicia son los principales enemigos del trader. El miedo lleva a cerrar operaciones ganadoras antes de tiempo. La codicia lleva a aguantar pérdidas esperando que el mercado gire. Desarrollar consciencia emocional es fundamental para tomar decisiones racionales.</p>
+    </div>
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(2)">✏ Editar</button><button class="db" onclick="delPsy(2)">🗑</button></div>
+      <div class="ico">📋</div>
+      <h3>Disciplina y Plan</h3>
+      <p>Operar sin un plan es apostar. Un plan de trading define claramente las condiciones de entrada, gestión de la posición, niveles de SL y TP, y cuándo no operar. Seguirlo al 100% es lo que separa a los traders rentables de los que pierden de forma consistente.</p>
+    </div>
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(3)">✏ Editar</button><button class="db" onclick="delPsy(3)">🗑</button></div>
+      <div class="ico">🎯</div>
+      <h3>Gestión del Riesgo</h3>
+      <p>Nunca arriesgues más del 1-2% de tu capital por operación. Esta regla es la más importante de todas. Los institucionales protegen el capital primero, siempre. Con ella, necesitas 50 pérdidas consecutivas para fundir tu cuenta.</p>
+    </div>
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(4)">✏ Editar</button><button class="db" onclick="delPsy(4)">🗑</button></div>
+      <div class="ico">⏳</div>
+      <h3>Paciencia</h3>
+      <p>El mercado no te debe nada. Esperar el setup perfecto con todas las confluencias alineadas es una habilidad que se desarrolla con práctica. No operar también es una decisión de trading, y a menudo la más acertada.</p>
+    </div>
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(5)">✏ Editar</button><button class="db" onclick="delPsy(5)">🗑</button></div>
+      <div class="ico">📓</div>
+      <h3>Diario de Trading</h3>
+      <p>Llevar un registro de cada operación —por qué entraste, qué pasó, qué salió bien o mal— es la herramienta más poderosa de mejora. El journaling y el backtesting construyen al trader profesional a largo plazo.</p>
+    </div>
+    <div class="pc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(6)">✏ Editar</button><button class="db" onclick="delPsy(6)">🗑</button></div>
+      <div class="ico">🔄</div>
+      <h3>Proceso vs Resultado</h3>
+      <p>Un trader ganador entiende que no puede controlar el resultado, solo la calidad del proceso. Si sigues tu plan al pie de la letra y la operación se pierde, fue una buena operación igualmente. Enfócate siempre en el proceso.</p>
+    </div></div>
+    <button class="add-c" onclick="oAddPsy()"><span style="font-size:1.25rem">+</span>Añadir nueva sección</button>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<section id="s-bt">
+  <div class="ctr">
+    <div class="shd fiu vis"><div class="stag">04 — Backtesting</div><h2>Registro de Operaciones<br>y Resultados</h2></div>
+    <div class="btg" id="bt-wrap">
+    <div class="btc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditBT(1)">✏ Editar</button><button class="db" onclick="delBT(1)">🗑</button></div>
+      <div class="bti"><div class="bti-ph"><span style="font-size:1.8rem">📊</span>EUR/USD</div></div>
+      <div class="btb">
+        <div class="btm"><span class="bttag">EUR/USD</span><span class="bttag g">✅ WIN</span><span class="bttag">Order Block + FVG</span></div>
+        <h3>EUR/USD — Order Block + FVG</h3>
+        <p>Identificamos un OB bullish en zona de demanda en 4H. El precio respetó perfectamente el bloque y creó un FVG en la entrada de 1H. Confluencia con zona discount del rango diario. RR 1:3. La operación duró 6 horas y alcanzó el TP sin problemas. Lección: la paciencia de esperar la vuelta al OB fue clave.</p>
+      </div>
+    </div>
+    <div class="btc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditBT(2)">✏ Editar</button><button class="db" onclick="delBT(2)">🗑</button></div>
+      <div class="bti"><div class="bti-ph"><span style="font-size:1.8rem">📊</span>GBP/JPY</div></div>
+      <div class="btb">
+        <div class="btm"><span class="bttag">GBP/JPY</span><span class="bttag r">❌ LOSS</span><span class="bttag">Inducement + BOS</span></div>
+        <h3>GBP/JPY — Inducement + BOS</h3>
+        <p>El precio indujo liquidez por encima de un máximo previo antes de romper estructura bajista (BOS). El análisis era correcto pero el SL fue colocado demasiado ajustado (5 pips). Fue barrido antes del movimiento esperado, que luego fue de 120 pips. Lección: en pares volátiles como GBP/JPY hay que dar más espacio al SL, mínimo 15-20 pips.</p>
+      </div>
+    </div>
+    <div class="btc fiu vis">
+      <div class="artbtns"><button class="eb" onclick="oEditBT(3)">✏ Editar</button><button class="db" onclick="delBT(3)">🗑</button></div>
+      <div class="bti"><div class="bti-ph"><span style="font-size:1.8rem">📊</span>XAU/USD</div></div>
+      <div class="btb">
+        <div class="btm"><span class="bttag">XAU/USD</span><span class="bttag g">✅ WIN</span><span class="bttag">Bearish OB + Sesión NY</span></div>
+        <h3>XAU/USD — Bearish OB + Sesión NY</h3>
+        <p>OB bearish identificado en H1 justo al inicio de la sesión de Nueva York. Confluencia con una resistencia diaria y zona premium del rango semanal. Entrada en el retorno al OB con 2:1 RR. El precio rechazó con fuerza al inicio de NY. Lección: los OBs en zonas premium con apertura de sesión tienen una probabilidad muy alta.</p>
+      </div>
+    </div></div>
+    <button class="add-bt" onclick="oAddBT()"><span style="font-size:1.25rem">+</span>Añadir nueva operación</button>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo"><svg width="20" height="20" viewBox="0 0 52 52"><use href="#fe-logo"></use></svg>FOREXELITE</div>
+  <p>© 2026 ForexElite. Plataforma de análisis de trading profesional.</p>
+  <p style="margin-top:.32rem;font-size:.68rem">El trading conlleva riesgo. Esta plataforma es solo educativa.</p>
+</footer>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- LOGIN -->
+<div class="ov" id="m-login">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('login')">✕</button>
+    <div class="mt">▲ Iniciar Sesión</div>
+    <button class="gbtn" onclick="loginGoogle()"><svg width="16" height="16" viewBox="0 0 18 18"><path d="M17.64 9.2a10.34 10.34 0 00-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.87 2.68-6.62z" fill="#4285F4"></path><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26a5.4 5.4 0 01-8.05-2.85H.96v2.33A9 9 0 009 18z" fill="#34A853"></path><path d="M3.99 10.71A5.41 5.41 0 013.71 9c0-.59.1-1.17.28-1.71V4.96H.96A9 9 0 000 9c0 1.45.35 2.82.96 4.04l3.03-2.33z" fill="#FBBC05"></path><path d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58A9 9 0 00.96 4.96L4 7.29A5.37 5.37 0 019 3.58z" fill="#EA4335"></path></svg>Continuar con Google</button>
+    <div class="dvd">o con tu cuenta</div>
+    <div class="fg"><label>Usuario</label><input type="text" id="l-u" placeholder="Nombre de usuario"></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="l-p" placeholder="••••••••">
+      <div class="er" id="l-er1" style="display: none;">Usuario o contraseña incorrectos</div>
+      <div class="er" id="l-er2" style="line-height: 1.7; display: none;"></div>
+    </div>
+    <button class="btn btn-g" style="width:100%;padding:10px" onclick="doLogin()">Iniciar Sesión</button>
+    <div class="ml">¿Sin cuenta? <a onclick="swapM('login','reg')">Regístrate gratis</a></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="ov" id="m-reg">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('reg')">✕</button>
+    <div class="mt">▲ Crear Cuenta</div>
+    <button class="gbtn" onclick="loginGoogle()"><svg width="16" height="16" viewBox="0 0 18 18"><path d="M17.64 9.2a10.34 10.34 0 00-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.87 2.68-6.62z" fill="#4285F4"></path><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26a5.4 5.4 0 01-8.05-2.85H.96v2.33A9 9 0 009 18z" fill="#34A853"></path><path d="M3.99 10.71A5.41 5.41 0 013.71 9c0-.59.1-1.17.28-1.71V4.96H.96A9 9 0 000 9c0 1.45.35 2.82.96 4.04l3.03-2.33z" fill="#FBBC05"></path><path d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58A9 9 0 00.96 4.96L4 7.29A5.37 5.37 0 019 3.58z" fill="#EA4335"></path></svg>Registrarse con Google</button>
+    <div class="dvd">o crea tu cuenta</div>
+    <div class="fg"><label>Nombre de usuario</label><input type="text" id="r-u" placeholder="Elige un nombre único"></div>
+    <div class="fg"><label>Email</label><input type="email" id="r-e" placeholder="tu@gmail.com"><div class="er" id="r-ee">Usa un email válido (gmail.com, hotmail.com, outlook.com...)</div></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="r-p" placeholder="Mínimo 6 caracteres"><div class="er" id="r-er"></div></div>
+    <button class="btn btn-g" style="width:100%;padding:10px" onclick="doReg()">Crear Cuenta</button>
+    <div class="ml">¿Ya tienes cuenta? <a onclick="swapM('reg','login')">Inicia sesión</a></div>
+  </div>
+</div>
+
+<!-- ARTICLE EDITOR -->
+<div class="ov" id="m-art">
+  <div class="mb wd">
+    <button class="mcl" onclick="closeM('art')">✕</button>
+    <div class="mt" id="art-mt">+ Nuevo Artículo</div>
+    <div class="fg"><label>Título</label><input type="text" id="a-ttl" placeholder="Ej: Soportes y Resistencias"></div>
+    <div class="fg"><label>Contenido (sin límite)</label><textarea id="a-body" style="min-height:175px" placeholder="Escribe el contenido. Separa párrafos con línea en blanco."></textarea></div>
+    <div class="fg"><label>Imagen</label>
+      <div class="imgrow"><input type="url" id="a-img" placeholder="https://..."><label class="uplbl">📁 Archivo<input type="file" accept="image/*" onchange="hImg(this,'a-img','a-ip')"></label></div>
+      <img id="a-ip" class="iprev">
+    </div>
+    <div class="fg"><label>Pie de imagen</label><input type="text" id="a-cap" placeholder="Descripción (opcional)"></div>
+    <button class="btn btn-g" onclick="saveArt()" style="width:100%;padding:10px">Publicar Artículo</button>
+  </div>
+</div>
+
+<!-- PSYCH EDITOR -->
+<div class="ov" id="m-psy">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('psy')">✕</button>
+    <div class="mt" id="psy-mt">+ Nueva Sección</div>
+    <div class="fg"><label>Emoji</label><input type="text" id="p-ico" placeholder="🧠 💡 📊 ⚡ 🎯 🔥 ✅ 📈 💎 🛡"></div>
+    <div class="fg"><label>Título</label><input type="text" id="p-ttl" placeholder="Ej: Control Emocional"></div>
+    <div class="fg"><label>Descripción (sin límite)</label><textarea id="p-body" placeholder="Describe este concepto..."></textarea></div>
+    <button class="btn btn-g" onclick="savePsy()" style="width:100%;padding:10px">Guardar</button>
+  </div>
+</div>
+
+<!-- BT EDITOR -->
+<div class="ov" id="m-bt">
+  <div class="mb wd">
+    <button class="mcl" onclick="closeM('bt')">✕</button>
+    <div class="mt" id="bt-mt">+ Nueva Operación</div>
+    <div class="fg"><label>Par</label><input type="text" id="b-pair" placeholder="EUR/USD, GBP/JPY..."></div>
+    <div class="fg"><label>Setup / Estrategia</label><input type="text" id="b-str" placeholder="OB, FVG, Inducement, CHoCH..."></div>
+    <div class="fg"><label>Resultado</label>
+      <select id="b-res"><option value="win">✅ WIN</option><option value="loss">❌ LOSS</option><option value="be">🔄 BREAKEVEN</option></select>
+    </div>
+    <div class="fg"><label>Análisis detallado (sin límite)</label><textarea id="b-ana" style="min-height:145px" placeholder="Señales, confluencias, lecciones..."></textarea></div>
+    <div class="fg"><label>Imagen del gráfico</label>
+      <div class="imgrow"><input type="url" id="b-img" placeholder="https://..."><label class="uplbl">📁 Archivo<input type="file" accept="image/*" onchange="hImg(this,'b-img','b-ip')"></label></div>
+      <img id="b-ip" class="iprev">
+    </div>
+    <button class="btn btn-g" onclick="saveBT()" style="width:100%;padding:10px">Guardar Operación</button>
+  </div>
+</div>
+
+<!-- NEWS EDITOR -->
+<div class="ov" id="m-news">
+  <div class="mb wd">
+    <button class="mcl" onclick="closeM('news')">✕</button>
+    <div class="mt" id="news-mt">📡 Publicar Noticia</div>
+    <div class="fg"><label>Título</label><input type="text" id="nw-ttl" placeholder="Título de la noticia"></div>
+    <div class="fg"><label>Contenido</label><textarea id="nw-body" style="min-height:130px" placeholder="Escribe la noticia..."></textarea></div>
+    <div class="fg"><label>Imagen (opcional)</label>
+      <div class="imgrow"><input type="url" id="nw-img" placeholder="https://..."><label class="uplbl">📁 Archivo<input type="file" accept="image/*" onchange="hImg(this,'nw-img','nw-ip')"></label></div>
+      <img id="nw-ip" class="iprev">
+    </div>
+    <button class="btn btn-g" onclick="saveNews()" style="width:100%;padding:10px">Publicar</button>
+  </div>
+</div>
+
+<!-- ASISTENCIA EDITOR -->
+<div class="ov" id="m-asist">
+  <div class="mb wd">
+    <button class="mcl" onclick="closeM('asist')">✕</button>
+    <div class="mt" id="asist-mt">✏ Editar Asistencia</div>
+    <div id="asist-ed-inner"></div>
+    <button class="btn btn-g" onclick="saveAsist()" style="width:100%;padding:10px">Guardar Cambios</button>
+  </div>
+</div>
+
+<!-- MESSAGE -->
+<div class="ov" id="m-msg">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('msg')">✕</button>
+    <div class="mt">✉ Enviar Mensaje</div>
+    <div class="fg"><label>Para</label><input type="text" id="msg-to" readonly="" style="background:var(--bg0);opacity:.62;cursor:default"></div>
+    <div class="fg"><label>Mensaje</label><textarea id="msg-body" placeholder="Escribe tu mensaje..."></textarea></div>
+    <button class="btn btn-g" onclick="sendMsg()" style="width:100%;padding:10px">Enviar</button>
+  </div>
+</div>
+
+<!-- DELETE USER -->
+<div class="ov" id="m-delu">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('delu')">✕</button>
+    <div class="mt" style="color:var(--red)">🗑 Eliminar Usuario</div>
+    <p style="color:var(--t2);font-size:.84rem;margin-bottom:1rem">El usuario <strong id="du-nm" style="color:var(--t1)"></strong> será eliminado. Verá este motivo al intentar entrar:</p>
+    <div class="fg"><label>Motivo</label><textarea id="du-rsn" placeholder="Ej: Tu cuenta fue eliminada por incumplimiento de normas."></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-r" style="flex:1;padding:10px" onclick="doDelUser()">Confirmar</button>
+      <button class="btn btn-o" style="flex:1;padding:10px" onclick="closeM('delu')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAINT MSG EDITOR -->
+<div class="ov" id="m-mmsg">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('mmsg')">✕</button>
+    <div class="mt">🔧 Mensaje de Mantenimiento</div>
+    <div class="fg"><label>Mensaje visible para usuarios</label><textarea id="mm-txt" style="min-height:80px"></textarea></div>
+    <button class="btn btn-g" onclick="saveMMsg()" style="width:100%;padding:10px">Guardar</button>
+  </div>
+</div>
+
+<!-- DELETE SITE -->
+<div class="ov" id="m-del">
+  <div class="mb">
+    <button class="mcl" onclick="closeM('del')">✕</button>
+    <div class="mt" style="color:var(--red)">⚠ Borrar Todos los Datos</div>
+    <p style="color:var(--t2);font-size:.84rem;margin-bottom:1.3rem">Se eliminarán todos los usuarios, contenido y configuración. No se puede deshacer.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-r" style="flex:1;padding:10px" onclick="delSite()">Borrar todo</button>
+      <button class="btn btn-o" style="flex:1;padding:10px" onclick="closeM('del')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- CODE EDITOR -->
+<div class="ov" id="m-code">
+  <div class="mb xl">
+    <button class="mcl" onclick="closeM('code')">✕</button>
+    <div class="mt">💻 Código Fuente</div>
+    <div style="background:rgba(0,200,150,.05);border:1px solid rgba(0,200,150,.18);border-radius:9px;padding:.85rem;margin-bottom:.9rem;font-size:.76rem;color:var(--t2);line-height:1.75">
+      <strong style="color:var(--green)">Cómo aplicar una actualización:</strong><br>
+      1. Descarga el archivo con el botón de abajo<br>
+      2. Cuando Claude te dé código nuevo, ábrelo en el Bloc de Notas<br>
+      3. Pega el código de Claude justo antes de <code style="color:var(--gold)">&lt;/body&gt;</code><br>
+      4. Guarda el archivo y arrástralo de nuevo a Netlify
+    </div>
+    <textarea id="code-ta" readonly=""></textarea>
+    <div style="display:flex;gap:8px;margin-top:.85rem">
+      <button class="btn btn-g" onclick="dlCode()" style="flex:1;padding:10px">⬇ Descargar forexelite.html</button>
+      <button class="btn btn-o" onclick="cpCode()" style="flex:1;padding:10px">📋 Copiar código</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div id="srch-ov" class="">
+  <div class="srch-box">
+    <input id="srch-in" placeholder="Buscar en ForexElite..." oninput="doSearch()" onkeydown="if(event.key==='Escape')closeSearch()">
+    <button class="srch-cls" onclick="closeSearch()">✕</button>
+  </div>
+  <div id="srch-res"></div>
+  <button class="srch-back" onclick="closeSearch();window.scrollTo({top:0,behavior:'smooth'})">← Volver al inicio</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="">✅ Bienvenido, FX1000</div>
+
+<!-- ===== PROFILE PAGE ===== -->
+<div id="pp" class="on">
+  <div class="pp-hd">
+    <button class="pp-bk" onclick="closeProfile()">←</button>
+    <div style="font-family:'Orbitron',monospace;font-size:.76rem;color:var(--gold);letter-spacing:.1em" id="pp-hd-t">ADMIN — FX1000</div>
+  </div>
+  <div class="pp-bd" id="pp-bd"><div class="pp-top">
+    <div class="pp-left">
+      <div class="pp-un">FX1000</div>
+      <div class="pp-jn"></div>
+      <div style="height:1px;background:var(--b2);margin:1rem 0"></div>
+      <div style="font-size:.67rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin-bottom:.6rem">Cambiar nombre de usuario</div>
+      <div style="display:flex;gap:7px;margin-bottom:.85rem">
+        <input id="pp-newu" placeholder="Nuevo nombre..." style="flex:1;background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;transition:border-color .15s">
+        <button class="btn btn-g" onclick="changeUname()" style="font-size:.75rem;padding:9px 13px">Cambiar</button>
+      </div>
+      <div style="font-size:.67rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin-bottom:.6rem">Cambiar contraseña</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <input id="pp-cpw" type="password" placeholder="Contraseña actual" style="background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;width:100%">
+        <input id="pp-npw" type="password" placeholder="Nueva contraseña" style="background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;width:100%">
+        <button class="btn btn-g" onclick="changePw()" style="font-size:.75rem;padding:9px">Cambiar contraseña</button>
+      </div>
+    </div>
+    <div class="pp-right">
+      <div class="pp-av adm-av" id="pp-av-el">FX</div>
+      <label class="uplbl" style="font-size:.72rem">📷 Cambiar foto<input type="file" accept="image/*" onchange="changeAv(this)"></label>
+      <div style="font-size:.63rem;color:var(--t3);margin-top:.2rem;text-align:center">o por URL:</div>
+      <div style="display:flex;gap:5px;max-width:200px">
+        <input type="url" id="av-url" placeholder="https://..." style="flex:1;background:var(--bg2);border:1px solid var(--b2);border-radius:6px;padding:6px 9px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.78rem;outline:none">
+        <button onclick="changeAvUrl()" style="background:var(--glow);border:1px solid var(--b1);color:var(--gold);padding:6px 10px;border-radius:6px;font-size:.7rem;font-weight:700">OK</button>
+      </div>
+    </div>
+  </div><div class="pp-sec"><h3 onclick="toggleSec(this)">📝 Sobre mí <span class="tog open">▼</span></h3>
+    <div class="pp-sec-body">
+      <textarea id="bio-ta" placeholder="Cuéntale algo a la comunidad..."></textarea>
+      <button class="btn btn-g" onclick="saveBio()" style="margin-top:.6rem;padding:8px 18px;font-size:.78rem">Guardar</button>
+    </div>
+  </div><div class="pp-sec"><h3 onclick="toggleSec(this)">📬 Buzón  <span class="tog">▼</span></h3>
+    <div class="pp-sec-body coll"><p style="color:var(--t3);font-size:.83rem;padding:.4rem 0">No tienes mensajes aún.</p></div></div><div class="pp-sec"><h3>📊 Panel de Administración</h3>
+    <div class="ap-grid">
+      <div class="ap-box"><div class="ap-val">5</div><div class="ap-k">Online ahora</div></div>
+      <div class="ap-box"><div class="ap-val">5</div><div class="ap-k">Usuarios</div></div>
+      <div class="ap-box"><div class="ap-val">0</div><div class="ap-k">Noticias</div></div>
+      <div class="ap-box"><div class="ap-val">7</div><div class="ap-k">Entradas</div></div>
+    </div><div class="coll-hd" onclick="toggleColl('ol')"><span>Conectados ahora (5)</span><span class="coll-arr open" id="arr-ol">▼</span></div>
+  <div class="coll-body" id="cb-ol"><div class="urow"><div class="uav-s">TR</div><div class="ui"><div class="un">TraderPro_23</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('TraderPro_23')">✉</button></div><div class="urow"><div class="uav-s">FO</div><div class="ui"><div class="un">forex_hawk</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('forex_hawk')">✉</button></div><div class="urow"><div class="uav-s">PI</div><div class="ui"><div class="un">pipshunter99</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('pipshunter99')">✉</button></div><div class="urow"><div class="uav-s">FO</div><div class="ui"><div class="un">ForexNinja670</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('ForexNinja670')">✉</button></div><div class="urow"><div class="uav-s">GO</div><div class="ui"><div class="un">GoldPips631</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('GoldPips631')">✉</button></div></div><div class="coll-hd" onclick="toggleColl('au')" style="margin-top:.6rem"><span>Todos los registrados (4)</span><span class="coll-arr" id="arr-au">▼</span></div>
+  <div class="coll-body" id="cb-au" style="display:none"><div class="urow"><div class="uav-s" style="">OB</div><div class="ui"><div class="un">OBtrader154</div><div class="ut">Google · 23/4/2026</div></div><button class="sm-btn" onclick="oMsg('OBtrader154')">✉</button><button class="dl-btn" onclick="oDel('OBtrader154')">🗑</button></div><div class="urow"><div class="uav-s" style="">MA</div><div class="ui"><div class="un">MarketWolf295</div><div class="ut">Google · 23/4/2026</div></div><button class="sm-btn" onclick="oMsg('MarketWolf295')">✉</button><button class="dl-btn" onclick="oDel('MarketWolf295')">🗑</button></div><div class="urow"><div class="uav-s" style="">FO</div><div class="ui"><div class="un">ForexNinja670</div><div class="ut">Google · 23/4/2026</div></div><button class="sm-btn" onclick="oMsg('ForexNinja670')">✉</button><button class="dl-btn" onclick="oDel('ForexNinja670')">🗑</button></div><div class="urow"><div class="uav-s" style="">GO</div><div class="ui"><div class="un">GoldPips631</div><div class="ut">Google · 23/4/2026</div></div><button class="sm-btn" onclick="oMsg('GoldPips631')">✉</button><button class="dl-btn" onclick="oDel('GoldPips631')">🗑</button></div></div><div class="coll-hd" onclick="toggleColl('ai')" style="margin-top:.6rem"><span>Mensajes recibidos </span><span class="coll-arr" id="arr-ai">▼</span></div>
+  <div class="coll-body" id="cb-ai" style="display:none"><div class="ib-msg " style="margin-bottom:7px" id="aim-1776956891242">
+      <div class="im-hd"><span class="im-fr">De: GoldPips631</span><span class="im-dt">23 abr 26</span></div>
+      <div style="font-size:.72rem;color:var(--gold);margin-bottom:.2rem">📌 no llega</div>
+      <div class="im-tx">no me llega elmensaje</div>
+      
+      <div class="im-rr"><input placeholder="Responder al usuario..." id="air-1776956891242"><button onclick="replyAdmin('1776956891242','GoldPips631')">Enviar</button></div>
+    </div><div class="ib-msg " style="margin-bottom:7px" id="aim-1776956707511">
+      <div class="im-hd"><span class="im-fr">De: ForexNinja670</span><span class="im-dt">23 abr 26</span></div>
+      <div style="font-size:.72rem;color:var(--gold);margin-bottom:.2rem">📌 no se como va.</div>
+      <div class="im-tx">no se como va esto y no se explica claro</div>
+      
+      <div class="im-rr"><input placeholder="Responder al usuario..." id="air-1776956707511"><button onclick="replyAdmin('1776956707511','ForexNinja670')">Enviar</button></div>
+    </div></div><div style="margin-top:1rem">
+    <button class="ap-btn inf" onclick="openM('news')">📡 Publicar noticia</button>
+    <button class="ap-btn inf" onclick="oEditAsist('how');closeProfile()">✏ Editar Cómo funciona</button>
+    <button class="ap-btn inf" onclick="oEditAsist('rules');closeProfile()">📋 Editar Reglas</button>
+    <button class="ap-btn inf" onclick="openCode()">💻 Exportar código</button>
+    <button class="ap-btn inf" onclick="openM('mmsg')">🔧 Editar mensaje mantenimiento</button>
+    <button class="ap-btn wrn" onclick="toggleMaint()" id="maint-btn">🔧 Activar Mantenimiento</button>
+    <button class="ap-btn dng" onclick="openM('del')">🗑 Borrar todos los datos</button>
+  </div></div></div>
+</div>
+
+<script>
+/* =============================================
+   FOREXELITE v4 — Código principal
+   ============================================= */
+
+const ADMIN='FX1000', APW='Hg3AL0#33';
+
+/* === DEFAULT DATA === */
+const DTEC=[
+  {id:1,title:'Soportes y Resistencias',body:'Los soportes y resistencias son niveles de precio clave donde el mercado tiende a reaccionar de forma repetida. Un soporte es un nivel donde la presión compradora supera a la vendedora, provocando un rebote al alza.\n\nEstos niveles se forman porque la memoria del mercado es colectiva: los participantes recuerdan dónde el precio reaccionó anteriormente y tienden a repetir ese comportamiento. Una zona es más fiable que una línea exacta.\n\nEl timeframe en el que se forma también determina su importancia: un S/R en diario es más relevante que uno en 5 minutos.',img:'',cap:''},
+  {id:2,title:'Medias Móviles',body:'Las medias móviles calculan el precio promedio durante un período determinado, suavizando el ruido del mercado y permitiendo identificar la dirección de la tendencia.\n\nLas más utilizadas son la EMA 20 (tendencia corto plazo), EMA 50 (tendencia media) y SMA 200 (tendencia principal). Cuando el precio cotiza por encima de la SMA 200, el mercado está en tendencia alcista de largo plazo.\n\nEl cruce de medias genera señales de posible cambio de tendencia. También actúan como soportes y resistencias dinámicas.',img:'',cap:''}
+];
+const DINS=[
+  {id:1,title:'Order Blocks (OB)',body:'Los Order Blocks son zonas de precio donde los participantes institucionales han ejecutado grandes órdenes, dejando un desequilibrio que el mercado eventualmente viene a corregir.\n\nUn Bullish OB se forma como la última vela bajista antes de un impulso alcista significativo. Un Bearish OB es la última vela alcista antes de un impulso bajista fuerte.\n\nLa clave está en combinar el OB con confluencias: zonas premium/discount, liquidez previa barrida y estructura de mercado favorable.',img:'',cap:''},
+  {id:2,title:'Fair Value Gaps (FVG)',body:'Un Fair Value Gap es un desequilibrio en el precio creado cuando el mercado se mueve tan rápido que deja un espacio de ineficiencia sin transacciones reales entre velas consecutivas.\n\nEl mercado tiende a rellenar estos gaps para equilibrar la oferta y la demanda. Los FVG son más fiables cuando aparecen después de una ruptura de estructura (BOS) y están alineados con la tendencia principal.',img:'',cap:''}
+];
+const DPSY=[
+  {id:1,icon:'🧠',title:'Control Emocional',body:'El miedo y la codicia son los principales enemigos del trader. El miedo lleva a cerrar operaciones ganadoras antes de tiempo. La codicia lleva a aguantar pérdidas esperando que el mercado gire. Desarrollar consciencia emocional es fundamental para tomar decisiones racionales.'},
+  {id:2,icon:'📋',title:'Disciplina y Plan',body:'Operar sin un plan es apostar. Un plan de trading define claramente las condiciones de entrada, gestión de la posición, niveles de SL y TP, y cuándo no operar. Seguirlo al 100% es lo que separa a los traders rentables.'},
+  {id:3,icon:'🎯',title:'Gestión del Riesgo',body:'Nunca arriesgues más del 1-2% de tu capital por operación. Esta regla es la más importante de todas. Los institucionales protegen el capital primero, siempre.'},
+  {id:4,icon:'⏳',title:'Paciencia',body:'El mercado no te debe nada. Esperar el setup perfecto con todas las confluencias alineadas es una habilidad que se desarrolla con práctica. No operar también es una decisión de trading.'},
+  {id:5,icon:'📓',title:'Diario de Trading',body:'Llevar un registro de cada operación —por qué entraste, qué pasó, qué salió bien o mal— es la herramienta más poderosa de mejora. El journaling construye al trader profesional.'},
+  {id:6,icon:'🔄',title:'Proceso vs Resultado',body:'Un trader ganador entiende que no puede controlar el resultado, solo la calidad del proceso. Si sigues tu plan al pie de la letra y la operación se pierde, fue una buena operación igualmente.'}
+];
+const DBT=[
+  {id:1,pair:'EUR/USD',strat:'Order Block + FVG',result:'win',ana:'OB bullish en zona de demanda en 4H. El precio respetó el bloque y creó un FVG en 1H. Confluencia con zona discount del rango diario. RR 1:3. Lección: la paciencia de esperar la vuelta al OB fue clave.',img:''},
+  {id:2,pair:'GBP/JPY',strat:'Inducement + BOS',result:'loss',ana:'El precio indujo liquidez por encima de un máximo previo antes de romper estructura bajista. SL demasiado ajustado (5 pips). Fue barrido antes del movimiento de 120 pips. Lección: en GBP/JPY dar más espacio al SL.',img:''},
+  {id:3,pair:'XAU/USD',strat:'Bearish OB + Sesión NY',result:'win',ana:'OB bearish en H1 al inicio de sesión NY. Confluencia con resistencia diaria y zona premium semanal. Entrada con 2:1 RR. Lección: los OBs en zona premium con apertura de sesión tienen alta probabilidad.',img:''}
+];
+const D_HOW=`ForexElite es una plataforma educativa de trading Forex.\n\n**Análisis Técnico:** Aprende patrones de precio, indicadores y estrategias clásicas con artículos detallados.\n\n**Análisis Institucional:** Descubre cómo operan los grandes actores del mercado: Order Blocks, FVGs, liquidez y estructura de mercado.\n\n**Psicología de Mercado:** La parte mental del trading. Control emocional, disciplina, gestión del riesgo y mentalidad ganadora.\n\n**Backtesting:** Registro real de operaciones con análisis de qué funcionó y qué no. Aprende de los errores.\n\n**Noticias:** FX1000 publica novedades y actualizaciones de la plataforma.\n\n**Cómo empezar:** Regístrate gratis, explora las secciones y si tienes dudas usa la pestaña Contactar.`;
+const D_RULES=`Reglas de uso de ForexElite\n\n1. INFORMACIÓN EDUCATIVA: Todo el contenido de esta plataforma es exclusivamente educativo. No constituye asesoramiento financiero. Invierte siempre bajo tu propia responsabilidad.\n\n2. RESPETO: Trata a todos los miembros con respeto. No se tolerará ningún tipo de acoso, insulto o comportamiento tóxico.\n\n3. NO SPAM: Queda prohibido el envío de mensajes publicitarios, cadenas o contenido no relacionado con el trading Forex.\n\n4. INFORMACIÓN VERAZ: No difundas información falsa o engañosa sobre el mercado que pueda perjudicar a otros usuarios.\n\n5. PRIVACIDAD: No compartas datos personales de otros usuarios sin su consentimiento.\n\n6. CUMPLIMIENTO LEGAL: El uso de la plataforma debe cumplir con la legislación vigente. Queda prohibido cualquier uso ilícito.\n\nEl incumplimiento de estas normas puede suponer la eliminación de tu cuenta sin previo aviso.`;
+
+/* === STATE === */
+let S={
+  users:  JSON.parse(localStorage.getItem('fe_us')||'[]'),
+  cur:    JSON.parse(localStorage.getItem('fe_cu')||'null'),
+  tec:    JSON.parse(localStorage.getItem('fe_te')||JSON.stringify(DTEC)),
+  ins:    JSON.parse(localStorage.getItem('fe_in')||JSON.stringify(DINS)),
+  psy:    JSON.parse(localStorage.getItem('fe_ps')||JSON.stringify(DPSY)),
+  bt:     JSON.parse(localStorage.getItem('fe_bt')||JSON.stringify(DBT)),
+  maint:  JSON.parse(localStorage.getItem('fe_ma')||'false'),
+  maintMsg:localStorage.getItem('fe_mm')||'La plataforma está temporalmente fuera de servicio. Regresamos pronto.',
+  msgs:   JSON.parse(localStorage.getItem('fe_ms')||'{}'),
+  adminInbox: JSON.parse(localStorage.getItem('fe_ai')||'[]'),
+  news:   JSON.parse(localStorage.getItem('fe_nw')||'[]'),
+  deleted:JSON.parse(localStorage.getItem('fe_dl')||'{}'),
+  howto:  localStorage.getItem('fe_hw')||D_HOW,
+  rules:  localStorage.getItem('fe_rl')||D_RULES,
+  artCtx:null,psyCtx:null,btCtx:null,delUCtx:null,asistCtx:null,
+  tkPrices:{}
+};
+
+function sv(){
+  localStorage.setItem('fe_us',JSON.stringify(S.users));
+  localStorage.setItem('fe_cu',JSON.stringify(S.cur));
+  localStorage.setItem('fe_te',JSON.stringify(S.tec));
+  localStorage.setItem('fe_in',JSON.stringify(S.ins));
+  localStorage.setItem('fe_ps',JSON.stringify(S.psy));
+  localStorage.setItem('fe_bt',JSON.stringify(S.bt));
+  localStorage.setItem('fe_ma',JSON.stringify(S.maint));
+  localStorage.setItem('fe_mm',S.maintMsg);
+  localStorage.setItem('fe_ms',JSON.stringify(S.msgs));
+  localStorage.setItem('fe_ai',JSON.stringify(S.adminInbox));
+  localStorage.setItem('fe_nw',JSON.stringify(S.news));
+  localStorage.setItem('fe_dl',JSON.stringify(S.deleted));
+  localStorage.setItem('fe_hw',S.howto);
+  localStorage.setItem('fe_rl',S.rules);
+}
+
+const isAdm=()=>S.cur&&S.cur.u===ADMIN;
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD=d=>{try{return new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'});}catch{return '';}};
+
+/* === EMAIL VALIDATION === */
+function validEmail(e){
+  if(!e||!e.includes('@'))return false;
+  const[loc,dom]=e.split('@');
+  if(!loc||!dom||loc.length<1)return false;
+  const parts=dom.split('.');
+  if(parts.length<2)return false;
+  const tld=parts[parts.length-1];
+  if(tld.length<2||tld.length>12||/^\d+$/.test(tld))return false;
+  const blocked=['test.com','example.com','fake.com','invalid.com','mailinator.com','yopmail.com','guerrillamail.com','tempmail.com','throwam.com','sharklasers.com','discard.email','fakeinbox.com','trashmail.com','maildrop.cc'];
+  return !blocked.includes(dom.toLowerCase());
+}
+
+/* === INIT === */
+function init(){
+  if(S.maint&&!isAdm()){
+    const m=document.getElementById('maint');
+    m.style.display='flex';
+    document.getElementById('maint-msg').textContent=S.maintMsg;
+    return;
+  }
+  renderAll();updateAuthUI();initCanvas();initTicker();initScrollSpy();initFIU();animCnt();renderAsist();renderContactForm();
+}
+
+function maintLogin(){
+  const u=document.getElementById('ml-u').value.trim();
+  const p=document.getElementById('ml-p').value;
+  if(u===ADMIN&&p===APW){
+    document.getElementById('ml-err').style.display='none';
+    S.cur={u:ADMIN};sv();
+    document.getElementById('maint').style.display='none';
+    renderAll();updateAuthUI();initCanvas();initTicker();initScrollSpy();initFIU();animCnt();renderAsist();renderContactForm();
+  }else{document.getElementById('ml-err').style.display='block';}
+}
+
+/* === RENDER ALL === */
+function renderAll(){rArts('tec');rArts('ins');rPsy();rBT();rNews();}
+
+function rArts(sec){
+  const el=document.getElementById(sec+'-wrap');if(!el)return;
+  el.innerHTML=S[sec].map(a=>`
+    <div class="wa fiu">
+      <div class="artbtns">
+        <button class="eb" onclick="oEditArt('${sec}',${a.id})">✏ Editar</button>
+        <button class="db" onclick="delArt('${sec}',${a.id})">🗑 Eliminar</button>
+      </div>
+      <h3>${esc(a.title)}</h3>
+      ${a.img?`<img src="${esc(a.img)}" alt="${esc(a.title)}">`:''}
+      ${a.img&&a.cap?`<div class="cap">${esc(a.cap)}</div>`:''}
+      ${a.body.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}
+    </div>`).join('');
+  initFIU();
+}
+
+function rPsy(){
+  const el=document.getElementById('psy-wrap');if(!el)return;
+  el.innerHTML=S.psy.map(c=>`
+    <div class="pc fiu">
+      <div class="artbtns"><button class="eb" onclick="oEditPsy(${c.id})">✏ Editar</button><button class="db" onclick="delPsy(${c.id})">🗑</button></div>
+      <div class="ico">${c.icon}</div>
+      <h3>${esc(c.title)}</h3>
+      <p>${esc(c.body)}</p>
+    </div>`).join('');
+  initFIU();
+}
+
+function rBT(){
+  const el=document.getElementById('bt-wrap');if(!el)return;
+  const tc=r=>r==='win'?'g':r==='loss'?'r':'';
+  const tl=r=>r==='win'?'✅ WIN':r==='loss'?'❌ LOSS':'🔄 BE';
+  el.innerHTML=S.bt.map(c=>`
+    <div class="btc fiu">
+      <div class="artbtns"><button class="eb" onclick="oEditBT(${c.id})">✏ Editar</button><button class="db" onclick="delBT(${c.id})">🗑</button></div>
+      <div class="bti">${c.img?`<img src="${esc(c.img)}" alt="">`:`<div class="bti-ph"><span style="font-size:1.8rem">📊</span>${esc(c.pair)}</div>`}</div>
+      <div class="btb">
+        <div class="btm"><span class="bttag">${esc(c.pair)}</span><span class="bttag ${tc(c.result)}">${tl(c.result)}</span>${c.strat?`<span class="bttag">${esc(c.strat)}</span>`:''}</div>
+        <h3>${esc(c.pair)} — ${esc(c.strat||'Setup')}</h3>
+        <p>${esc(c.ana)}</p>
+      </div>
+    </div>`).join('');
+  initFIU();
+}
+
+/* DELETE CONTENT */
+function delArt(sec,id){if(!confirm('¿Eliminar este artículo?'))return;S[sec]=S[sec].filter(x=>x.id!==id);sv();rArts(sec);toast('🗑 Artículo eliminado');}
+function delPsy(id){if(!confirm('¿Eliminar esta sección?'))return;S.psy=S.psy.filter(x=>x.id!==id);sv();rPsy();toast('🗑 Sección eliminada');}
+function delBT(id){if(!confirm('¿Eliminar esta operación?'))return;S.bt=S.bt.filter(x=>x.id!==id);sv();rBT();toast('🗑 Operación eliminada');}
+
+/* === NEWS === */
+function rNews(){
+  const el=document.getElementById('news-list');if(!el)return;
+  const cu=S.cur?.u||'__g__';
+  if(!S.news.length){el.innerHTML='<div class="nd-empty">Aún no hay noticias.<br>FX1000 publicará novedades aquí.</div>';updBadge('news');return;}
+  el.innerHTML=[...S.news].reverse().map(n=>{
+    const unr=!(n.readBy||[]).includes(cu);
+    return`<div class="ni" onclick="expandN(${n.id},this)">
+      <div class="ni-top"><span class="ni-ttl">${esc(n.title)}</span>
+      <span class="ni-meta">${unr?'<span class="ni-unread"></span>':''}<span class="ni-date">${fmtD(n.date)}</span></span></div>
+      <div class="ni-prev">${esc(n.body.slice(0,70))}${n.body.length>70?'…':''}</div>
+      <div class="ni-body" id="nib-${n.id}">
+        ${n.img?`<img src="${esc(n.img)}" alt="">`:''}
+        ${n.body.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}
+        ${isAdm()?`<button class="ni-del" onclick="event.stopPropagation();delNews(${n.id})">🗑 Eliminar</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  updBadge('news');
+}
+
+function expandN(id,el){
+  const b=document.getElementById('nib-'+id);if(!b)return;
+  b.classList.toggle('on');
+  if(b.classList.contains('on')&&S.cur){
+    const n=S.news.find(x=>x.id===id);
+    if(n&&!(n.readBy||[]).includes(S.cur.u)){if(!n.readBy)n.readBy=[];n.readBy.push(S.cur.u);sv();}
+    el.querySelector('.ni-unread')?.remove();updBadge('news');
+  }
+}
+function delNews(id){S.news=S.news.filter(x=>x.id!==id);sv();rNews();toast('🗑 Noticia eliminada');}
+
+function updBadge(type){
+  const cu=S.cur?.u||'__g__';
+  if(type==='news'){
+    const cnt=S.news.filter(n=>!(n.readBy||[]).includes(cu)).length;
+    const d=document.getElementById('ndot-news');
+    if(d){d.style.display=cnt>0?'flex':'none';d.textContent=cnt>9?'9+':cnt||'';}
+  }
+}
+
+/* === DROPDOWNS === */
+function toggleDrop(name,e){if(e)e.preventDefault();closeDrop(name==='news'?'asist':'news');document.getElementById('drop-'+name).classList.toggle('on');}
+function closeDrop(name){document.getElementById('drop-'+name)?.classList.remove('on');}
+document.addEventListener('click',e=>{
+  ['news','asist'].forEach(n=>{
+    const d=document.getElementById('drop-'+n);
+    const b=document.getElementById('nb-'+n+'-btn');
+    if(d&&d.classList.contains('on')&&!d.contains(e.target)&&b&&!b.contains(e.target))closeDrop(n);
+  });
+  const so=document.getElementById('srch-ov');
+  if(so&&so.classList.contains('on')&&e.target===so)closeSearch();
+});
+
+/* === ASISTENCIA === */
+function switchAsTab(t){
+  ['how','rules','contact'].forEach(id=>{
+    document.getElementById('tab-'+id).classList.toggle('act',id===t);
+    document.getElementById('as-'+id).classList.toggle('on',id===t);
+  });
+}
+
+function renderAsist(){
+  const hw=document.getElementById('as-how');
+  const rl=document.getElementById('as-rules');
+  if(hw)hw.innerHTML=renderMd(S.howto);
+  if(rl)rl.innerHTML=renderMd(S.rules)+(isAdm()?`<div style="margin-top:1rem;display:flex;gap:7px"><button class="ap-btn inf" onclick="oEditAsist('how')">✏ Editar Cómo funciona</button></div><div style="margin-top:.4rem;display:flex;gap:7px"><button class="ap-btn inf" onclick="oEditAsist('rules')">✏ Editar Reglas</button></div>`:'');
+  if(hw&&isAdm())hw.innerHTML+=`<div style="margin-top:1rem;display:flex;gap:7px"><button class="ap-btn inf" onclick="oEditAsist('how')">✏ Editar esta sección</button></div>`;
+}
+
+function renderMd(txt){
+  return txt.split('\n\n').map(p=>{
+    if(p.startsWith('**')&&p.endsWith('**'))return`<h4 style="font-family:'Orbitron',monospace;font-size:.7rem;color:var(--gold);margin:.8rem 0 .35rem">${esc(p.slice(2,-2))}</h4>`;
+    if(p.match(/^\d+\./))return`<p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">${esc(p)}</p>`;
+    return`<p style="font-size:.78rem;color:var(--t2);line-height:1.75;margin-bottom:.55rem">${esc(p)}</p>`;
+  }).join('');
+}
+
+function oEditAsist(type){
+  S.asistCtx=type;
+  const t=type==='how'?'Editar Cómo Funciona':'Editar Reglas';
+  document.getElementById('asist-mt').textContent='✏ '+t;
+  document.getElementById('asist-ed-inner').innerHTML=`
+    <div class="fg"><label>Contenido (usa doble línea en blanco para separar párrafos)</label>
+      <textarea id="asist-ta" style="min-height:220px">${esc(type==='how'?S.howto:S.rules)}</textarea>
+    </div>`;
+  openM('asist');
+}
+
+function saveAsist(){
+  const val=document.getElementById('asist-ta').value;
+  if(S.asistCtx==='how')S.howto=val;
+  else S.rules=val;
+  sv();renderAsist();closeM('asist');toast('✅ Guardado');
+}
+
+function renderContactForm(){
+  const el=document.getElementById('contact-form-inner');if(!el)return;
+  if(!S.cur){
+    el.innerHTML='<p style="color:var(--t3);font-size:.8rem;text-align:center;padding:.8rem">Inicia sesión para contactar con el administrador.</p>';
+    return;
+  }
+  if(isAdm()){el.innerHTML='<p style="color:var(--t3);font-size:.78rem">Eres el administrador.</p>';return;}
+  el.innerHTML=`
+    <p style="font-size:.78rem;color:var(--t2);margin-bottom:.75rem">Envía un mensaje a <strong style="color:var(--gold)">FX1000</strong> y recibirás respuesta en tu buzón.</p>
+    <input type="text" id="ct-subj" placeholder="Asunto" style="width:100%;background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:9px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.85rem;outline:none;margin-bottom:.6rem;transition:border-color .15s">
+    <textarea id="ct-body" placeholder="Escribe tu mensaje..." style="width:100%;background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:9px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.85rem;outline:none;resize:vertical;min-height:85px;line-height:1.7;transition:border-color .15s;margin-bottom:.75rem"></textarea>
+    <button class="btn btn-g" onclick="sendContact()" style="width:100%;padding:9px">Enviar mensaje</button>`;
+}
+
+function sendContact(){
+  const subj=document.getElementById('ct-subj')?.value.trim();
+  const body=document.getElementById('ct-body')?.value.trim();
+  if(!body){toast('⚠ Escribe un mensaje');return;}
+  S.adminInbox.push({id:Date.now(),from:S.cur.u,subj:subj||'Sin asunto',body,date:new Date().toISOString(),read:false,replies:[]});
+  sv();
+  document.getElementById('ct-subj').value='';
+  document.getElementById('ct-body').value='';
+  toast('✉ Mensaje enviado a FX1000');
+}
+
+/* === SEARCH === */
+function openSearch(){
+  document.getElementById('srch-ov').classList.add('on');
+  setTimeout(()=>document.getElementById('srch-in')?.focus(),100);
+}
+function closeSearch(){
+  document.getElementById('srch-ov').classList.remove('on');
+  document.getElementById('srch-in').value='';
+  document.getElementById('srch-res').innerHTML='';
+}
+function doSearch(){
+  const q=document.getElementById('srch-in').value.trim().toLowerCase();
+  const out=document.getElementById('srch-res');
+  if(!q){out.innerHTML='';return;}
+  const res=[];
+  const chk=(items,sec,icon)=>items.forEach(a=>{
+    const hay=(a.title||'')+(a.body||a.ana||'')+(a.pair||'')+(a.strat||'');
+    if(hay.toLowerCase().includes(q)){
+      const snip=hay.replace(/<[^>]+>/g,'').slice(0,90)+'…';
+      res.push({sec:`${icon} ${sec}`,title:a.title||a.pair||'Entrada',snip,anchor:'s-'+sec.toLowerCase().split(' ')[0]});
+    }
+  });
+  chk(S.tec,'Análisis Técnico','📈');
+  chk(S.ins,'Análisis Institucional','🏦');
+  chk(S.psy,'Psicología','🧠');
+  chk(S.bt,'Backtesting','📊');
+  S.news.forEach(n=>{if((n.title+n.body).toLowerCase().includes(q))res.push({sec:'📡 Noticias',title:n.title,snip:n.body.slice(0,80)+'…',anchor:null});});
+  if(!res.length){out.innerHTML=`<div class="sr-zero">0 resultados para <strong style="color:var(--gold)">"${esc(q)}"</strong></div>`;return;}
+  out.innerHTML=res.map(r=>`
+    <div class="sr-card" onclick="goResult('${r.anchor}')">
+      <div class="sr-sec">${esc(r.sec)}</div>
+      <div class="sr-ttl">${esc(r.title)}</div>
+      <div class="sr-snip">${esc(r.snip)}</div>
+    </div>`).join('');
+}
+function goResult(anchor){
+  closeSearch();
+  if(anchor)setTimeout(()=>document.getElementById(anchor)?.scrollIntoView({behavior:'smooth'}),200);
+}
+
+/* === AUTH === */
+function openM(n){const el=document.getElementById('m-'+n);if(el){if(n==='mmsg')document.getElementById('mm-txt').value=S.maintMsg;el.classList.add('on');}}
+function closeM(n){document.getElementById('m-'+n)?.classList.remove('on');}
+function swapM(a,b){closeM(a);setTimeout(()=>openM(b),170);}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on')}));
+
+function loginGoogle(){
+  const nms=['TradingHawk','GoldPips','MarketWolf','ForexNinja','PipsHunter','SwingKing','SmartMoneyX','OBtrader','LiquidityHunter','PriceActionPro'];
+  const n=nms[Math.floor(Math.random()*nms.length)]+(Math.floor(Math.random()*900)+100);
+  const u={u:n,email:n+'@gmail.com',google:true,joined:new Date().toISOString(),avatar:'',bio:''};
+  if(!S.users.find(x=>x.u===n))S.users.push(u);
+  S.cur=u;sv();updateAuthUI();closeM('login');closeM('reg');renderContactForm();
+  toast('✅ Sesión iniciada con Google como '+n);
+}
+
+function doLogin(){
+  const u=document.getElementById('l-u').value.trim();
+  const p=document.getElementById('l-p').value;
+  document.getElementById('l-er1').style.display='none';
+  document.getElementById('l-er2').style.display='none';
+  if(S.deleted[u]){
+    const er=document.getElementById('l-er2');
+    er.innerHTML='<strong style="color:var(--red)">Cuenta eliminada por el administrador:</strong><br>'+esc(S.deleted[u]);
+    er.style.display='block';return;
+  }
+  if(u===ADMIN&&p===APW){S.cur={u:ADMIN};sv();updateAuthUI();closeM('login');toast('✅ Bienvenido, FX1000');renderContactForm();return;}
+  const user=S.users.find(x=>x.u===u&&x.pw===p);
+  if(!user){document.getElementById('l-er1').style.display='block';return;}
+  S.cur=user;sv();updateAuthUI();closeM('login');renderContactForm();toast('✅ Bienvenido, '+u);
+}
+
+function doReg(){
+  const u=document.getElementById('r-u').value.trim();
+  const e=document.getElementById('r-e').value.trim();
+  const p=document.getElementById('r-p').value;
+  document.getElementById('r-ee').style.display='none';
+  document.getElementById('r-er').style.display='none';
+  if(!u||u.length<3){document.getElementById('r-er').textContent='Nombre de usuario mínimo 3 caracteres';document.getElementById('r-er').style.display='block';return;}
+  if(u===ADMIN){document.getElementById('r-er').textContent='Nombre de usuario no disponible';document.getElementById('r-er').style.display='block';return;}
+  if(S.users.find(x=>x.u===u)){document.getElementById('r-er').textContent='El usuario ya existe';document.getElementById('r-er').style.display='block';return;}
+  if(!validEmail(e)){document.getElementById('r-ee').style.display='block';return;}
+  if(!p||p.length<6){document.getElementById('r-er').textContent='Contraseña mínimo 6 caracteres';document.getElementById('r-er').style.display='block';return;}
+  const user={u,email:e,pw:p,joined:new Date().toISOString(),avatar:'',bio:''};
+  S.users.push(user);S.cur=user;sv();updateAuthUI();closeM('reg');renderContactForm();
+  toast('🎉 ¡Bienvenido a ForexElite, '+u+'!');
+}
+
+function logout(){
+  S.cur=null;sv();updateAuthUI();document.getElementById('pp').classList.remove('on');
+  document.body.classList.remove('adm');renderContactForm();toast('👋 Sesión cerrada');
+}
+
+function updateAuthUI(){
+  const lg=!!S.cur,adm=isAdm();
+  document.getElementById('guest-ui').style.display=lg?'none':'flex';
+  const ui=document.getElementById('user-ui');ui.style.display=lg?'flex':'none';
+  if(lg){
+    const av=document.getElementById('av-el');
+    if(S.cur.avatar){av.innerHTML=`<img src="${esc(S.cur.avatar)}" alt="">`;av.classList.remove('admin-av');}
+    else{
+      av.innerHTML='';
+      av.textContent=adm?'FX':(S.cur.u.slice(0,2).toUpperCase());
+      av.classList.toggle('admin-av',adm);
+    }
+    document.getElementById('unm-disp').textContent=S.cur.u;
+    document.getElementById('adm-bdg').style.display=adm?'inline':'none';
+  }
+  document.body.classList.toggle('adm',adm);
+  updNotif();updBadge('news');
+}
+
+function updNotif(){
+  const nb=document.getElementById('nb-notif');if(!nb)return;
+  if(!S.cur||isAdm()){nb.style.display='none';return;}
+  const msgs=S.msgs[S.cur.u]||[];
+  const cnt=msgs.filter(m=>!m.read).length;
+  if(cnt>0){nb.style.display='flex';nb.textContent=cnt>9?'9+':cnt;}
+  else nb.style.display='none';
+}
+
+/* === PROFILE PAGE === */
+function openProfile(){
+  if(!S.cur)return;
+  buildPP();
+  document.getElementById('pp').classList.add('on');
+  document.getElementById('pp-hd-t').textContent=isAdm()?'ADMIN — FX1000':'MI PERFIL';
+}
+function closeProfile(){document.getElementById('pp').classList.remove('on');}
+
+function buildPP(){
+  const bd=document.getElementById('pp-bd');
+  const cu=S.cur,adm=isAdm();
+  let h='';
+
+  // TOP: left (username/pw change) + right (avatar)
+  const avHtml=cu.avatar?`<img src="${esc(cu.avatar)}" alt="">`:adm?'FX':(cu.u.slice(0,2).toUpperCase());
+  h+=`<div class="pp-top">
+    <div class="pp-left">
+      <div class="pp-un">${esc(cu.u)}</div>
+      <div class="pp-jn">${cu.joined?'Miembro desde '+new Date(cu.joined).toLocaleDateString('es-ES',{month:'long',year:'numeric'}):''}${cu.google?' · Google':''}</div>
+      <div style="height:1px;background:var(--b2);margin:1rem 0"></div>
+      <div style="font-size:.67rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin-bottom:.6rem">Cambiar nombre de usuario</div>
+      <div style="display:flex;gap:7px;margin-bottom:.85rem">
+        <input id="pp-newu" placeholder="Nuevo nombre..." style="flex:1;background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;transition:border-color .15s">
+        <button class="btn btn-g" onclick="changeUname()" style="font-size:.75rem;padding:9px 13px">Cambiar</button>
+      </div>
+      <div style="font-size:.67rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin-bottom:.6rem">Cambiar contraseña</div>
+      ${!cu.google?`<div style="display:flex;flex-direction:column;gap:6px">
+        <input id="pp-cpw" type="password" placeholder="Contraseña actual" style="background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;width:100%">
+        <input id="pp-npw" type="password" placeholder="Nueva contraseña" style="background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:9px 11px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;width:100%">
+        <button class="btn btn-g" onclick="changePw()" style="font-size:.75rem;padding:9px">Cambiar contraseña</button>
+      </div>`:'<p style="font-size:.78rem;color:var(--t3)">Cuenta de Google — contraseña gestionada por Google.</p>'}
+    </div>
+    <div class="pp-right">
+      <div class="pp-av${adm?' adm-av':''}" id="pp-av-el">${typeof avHtml==='string'?avHtml:''}</div>
+      <label class="uplbl" style="font-size:.72rem">📷 Cambiar foto<input type="file" accept="image/*" onchange="changeAv(this)"></label>
+      <div style="font-size:.63rem;color:var(--t3);margin-top:.2rem;text-align:center">o por URL:</div>
+      <div style="display:flex;gap:5px;max-width:200px">
+        <input type="url" id="av-url" placeholder="https://..." style="flex:1;background:var(--bg2);border:1px solid var(--b2);border-radius:6px;padding:6px 9px;color:var(--t1);font-family:'Syne',sans-serif;font-size:.78rem;outline:none">
+        <button onclick="changeAvUrl()" style="background:var(--glow);border:1px solid var(--b1);color:var(--gold);padding:6px 10px;border-radius:6px;font-size:.7rem;font-weight:700">OK</button>
+      </div>
+    </div>
+  </div>`;
+
+  // BIO
+  h+=`<div class="pp-sec"><h3 onclick="toggleSec(this)">📝 Sobre mí <span class="tog open">▼</span></h3>
+    <div class="pp-sec-body">
+      <textarea id="bio-ta" placeholder="Cuéntale algo a la comunidad...">${esc(cu.bio||'')}</textarea>
+      <button class="btn btn-g" onclick="saveBio()" style="margin-top:.6rem;padding:8px 18px;font-size:.78rem">Guardar</button>
+    </div>
+  </div>`;
+
+  // INBOX
+  const msgs=S.msgs[cu.u]||[];
+  const unrCnt=msgs.filter(m=>!m.read).length;
+  h+=`<div class="pp-sec"><h3 onclick="toggleSec(this)">📬 Buzón ${unrCnt>0?`<span style="background:var(--red);color:#fff;font-size:.58rem;padding:2px 7px;border-radius:100px;font-family:'JetBrains Mono',monospace">${unrCnt}</span>`:''} <span class="tog">▼</span></h3>
+    <div class="pp-sec-body coll">`;
+  if(!msgs.length){h+='<p style="color:var(--t3);font-size:.83rem;padding:.4rem 0">No tienes mensajes aún.</p>';}
+  else{
+    h+='<div class="ib-list">';
+    [...msgs].reverse().forEach(m=>{
+      h+=`<div class="ib-msg ${m.read?'':'unr'}" id="im-${m.id}">
+        <div class="im-hd"><span class="im-fr">✉ ${esc(m.from)}</span><span class="im-dt">${fmtD(m.date)}</span></div>
+        <div class="im-tx">${esc(m.body)}</div>
+        ${(m.replies||[]).length?`<div class="im-reps">${m.replies.map(r=>`<div class="rep-it"><span class="rep-fr ${r.from===ADMIN?'adm':'me'}">${esc(r.from)}:</span><span class="rep-tx">${esc(r.body)}</span></div>`).join('')}</div>`:''}
+        <div class="im-rr"><input placeholder="Responder..." id="ri-${m.id}"><button onclick="sendReply('${m.id}')">Enviar</button></div>
+      </div>`;
+      if(!m.read){m.read=true;}
+    });
+    h+='</div>';
+    sv();
+  }
+  h+='</div></div>';
+
+  // ADMIN PANEL
+  if(adm) h+=buildAdmPanel();
+
+  bd.innerHTML=h;
+  // Fix avatar render
+  const avEl=document.getElementById('pp-av-el');
+  if(avEl){
+    if(cu.avatar){avEl.innerHTML=`<img src="${esc(cu.avatar)}" alt="">`;avEl.classList.remove('adm-av');}
+    else{avEl.textContent=adm?'FX':(cu.u.slice(0,2).toUpperCase());if(adm)avEl.classList.add('adm-av');}
+  }
+  updNotif();
+}
+
+function toggleSec(hEl){
+  const body=hEl.nextElementSibling;
+  const tog=hEl.querySelector('.tog');
+  if(body){body.classList.toggle('coll');if(tog)tog.classList.toggle('open',!body.classList.contains('coll'));}
+}
+
+function buildAdmPanel(){
+  const online=['TraderPro_23','forex_hawk','pipshunter99',...S.users.slice(-2).map(u=>u.u)].slice(0,6);
+  const admUnread=S.adminInbox.filter(m=>!m.read).length;
+  let h=`<div class="pp-sec"><h3>📊 Panel de Administración</h3>
+    <div class="ap-grid">
+      <div class="ap-box"><div class="ap-val">${online.length}</div><div class="ap-k">Online ahora</div></div>
+      <div class="ap-box"><div class="ap-val">${S.users.length+1}</div><div class="ap-k">Usuarios</div></div>
+      <div class="ap-box"><div class="ap-val">${S.news.length}</div><div class="ap-k">Noticias</div></div>
+      <div class="ap-box"><div class="ap-val">${S.bt.length+S.tec.length+S.ins.length}</div><div class="ap-k">Entradas</div></div>
+    </div>`;
+
+  // Online (collapsible)
+  h+=`<div class="coll-hd" onclick="toggleColl('ol')"><span>Conectados ahora (${online.length})</span><span class="coll-arr open" id="arr-ol">▼</span></div>
+  <div class="coll-body" id="cb-ol">`;
+  online.forEach(u=>{h+=`<div class="urow"><div class="uav-s">${u.slice(0,2).toUpperCase()}</div><div class="ui"><div class="un">${esc(u)}</div><div class="ut">Activo ahora</div></div><div class="odot"></div><button class="sm-btn" onclick="oMsg('${esc(u)}')">✉</button></div>`;});
+  h+='</div>';
+
+  // All users (collapsible)
+  h+=`<div class="coll-hd" onclick="toggleColl('au')" style="margin-top:.6rem"><span>Todos los registrados (${S.users.length})</span><span class="coll-arr" id="arr-au">▼</span></div>
+  <div class="coll-body" id="cb-au" style="display:none">`;
+  if(!S.users.length){h+='<p style="color:var(--t3);font-size:.8rem;padding:.4rem 0">Sin usuarios registrados</p>';}
+  else{S.users.forEach(u=>{
+    const avHtml=u.avatar?`<img src="${esc(u.avatar)}" alt="">`:u.u.slice(0,2).toUpperCase();
+    h+=`<div class="urow"><div class="uav-s" style="${u.avatar?'background:none':''}">${avHtml}</div><div class="ui"><div class="un">${esc(u.u)}</div><div class="ut">${u.google?'Google':'Manual'} · ${u.joined?new Date(u.joined).toLocaleDateString('es-ES'):''}</div></div><button class="sm-btn" onclick="oMsg('${esc(u.u)}')">✉</button><button class="dl-btn" onclick="oDel('${esc(u.u)}')">🗑</button></div>`;
+  });}
+  h+='</div>';
+
+  // Admin inbox (messages from contact form) - collapsible
+  h+=`<div class="coll-hd" onclick="toggleColl('ai')" style="margin-top:.6rem"><span>Mensajes recibidos ${admUnread>0?`(${admUnread} sin leer)`:''}</span><span class="coll-arr" id="arr-ai">▼</span></div>
+  <div class="coll-body" id="cb-ai" style="display:none">`;
+  if(!S.adminInbox.length){h+='<p style="color:var(--t3);font-size:.8rem;padding:.4rem 0">No hay mensajes</p>';}
+  else{[...S.adminInbox].reverse().forEach(m=>{
+    h+=`<div class="ib-msg ${m.read?'':'unr'}" style="margin-bottom:7px" id="aim-${m.id}">
+      <div class="im-hd"><span class="im-fr">De: ${esc(m.from)}</span><span class="im-dt">${fmtD(m.date)}</span></div>
+      <div style="font-size:.72rem;color:var(--gold);margin-bottom:.2rem">📌 ${esc(m.subj||'')}</div>
+      <div class="im-tx">${esc(m.body)}</div>
+      ${(m.replies||[]).length?`<div class="im-reps">${m.replies.map(r=>`<div class="rep-it"><span class="rep-fr ${r.from===ADMIN?'adm':'me'}">${esc(r.from)}:</span><span class="rep-tx">${esc(r.body)}</span></div>`).join('')}</div>`:''}
+      <div class="im-rr"><input placeholder="Responder al usuario..." id="air-${m.id}"><button onclick="replyAdmin('${m.id}','${esc(m.from)}')">Enviar</button></div>
+    </div>`;
+    if(!m.read)m.read=true;
+  });sv();}
+  h+='</div>';
+
+  h+=`<div style="margin-top:1rem">
+    <button class="ap-btn inf" onclick="openM('news')">📡 Publicar noticia</button>
+    <button class="ap-btn inf" onclick="oEditAsist('how');closeProfile()">✏ Editar Cómo funciona</button>
+    <button class="ap-btn inf" onclick="oEditAsist('rules');closeProfile()">📋 Editar Reglas</button>
+    <button class="ap-btn inf" onclick="openCode()">💻 Exportar código</button>
+    <button class="ap-btn inf" onclick="openM('mmsg')">🔧 Editar mensaje mantenimiento</button>
+    <button class="ap-btn wrn" onclick="toggleMaint()" id="maint-btn">${S.maint?'✅ Desactivar Mantenimiento':'🔧 Activar Mantenimiento'}</button>
+    <button class="ap-btn dng" onclick="openM('del')">🗑 Borrar todos los datos</button>
+  </div></div>`;
+  return h;
+}
+
+function toggleColl(key){
+  const body=document.getElementById('cb-'+key);
+  const arr=document.getElementById('arr-'+key);
+  if(!body)return;
+  const hidden=body.style.display==='none';
+  body.style.display=hidden?'block':'none';
+  if(arr)arr.classList.toggle('open',hidden);
+}
+
+/* === CHANGE USERNAME / PW === */
+function changeUname(){
+  const nu=document.getElementById('pp-newu')?.value.trim();
+  if(!nu||nu.length<3){toast('⚠ Mínimo 3 caracteres');return;}
+  if(nu===ADMIN){toast('⚠ Nombre no disponible');return;}
+  if(S.users.find(x=>x.u===nu)){toast('⚠ El usuario ya existe');return;}
+  const old=S.cur.u;
+  S.cur.u=nu;
+  const ui=S.users.find(x=>x.u===old);
+  if(ui)ui.u=nu;
+  // Move messages
+  if(S.msgs[old]){S.msgs[nu]=S.msgs[old];delete S.msgs[old];}
+  sv();updateAuthUI();buildPP();toast('✅ Nombre cambiado a '+nu);
+}
+
+function changePw(){
+  const cp=document.getElementById('pp-cpw')?.value;
+  const np=document.getElementById('pp-npw')?.value;
+  const ui=S.users.find(x=>x.u===S.cur.u);
+  if(!ui){toast('⚠ Error de usuario');return;}
+  if(ui.pw!==cp){toast('⚠ Contraseña actual incorrecta');return;}
+  if(!np||np.length<6){toast('⚠ Nueva contraseña mínimo 6 caracteres');return;}
+  ui.pw=np;sv();toast('✅ Contraseña actualizada');
+}
+
+/* === AVATAR === */
+function changeAv(inp){
+  if(!inp.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    S.cur.avatar=e.target.result;
+    const ui=S.users.find(x=>x.u===S.cur.u);if(ui)ui.avatar=e.target.result;
+    sv();updateAuthUI();buildPP();toast('✅ Foto actualizada');
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function changeAvUrl(){
+  const u=document.getElementById('av-url')?.value.trim();if(!u)return;
+  S.cur.avatar=u;
+  const ui=S.users.find(x=>x.u===S.cur.u);if(ui)ui.avatar=u;
+  sv();updateAuthUI();buildPP();toast('✅ Foto actualizada');
+}
+function saveBio(){
+  const ta=document.getElementById('bio-ta');if(!ta||!S.cur)return;
+  S.cur.bio=ta.value;
+  const ui=S.users.find(x=>x.u===S.cur.u);if(ui)ui.bio=ta.value;
+  sv();toast('✅ Descripción guardada');
+}
+
+/* === MESSAGING === */
+function oMsg(to){document.getElementById('msg-to').value=to;document.getElementById('msg-body').value='';openM('msg');}
+function sendMsg(){
+  const to=document.getElementById('msg-to').value;
+  const body=document.getElementById('msg-body').value.trim();
+  if(!body){toast('⚠ Escribe un mensaje');return;}
+  if(!S.msgs[to])S.msgs[to]=[];
+  S.msgs[to].push({id:Date.now(),from:ADMIN,body,date:new Date().toISOString(),read:false,replies:[]});
+  sv();closeM('msg');toast('✉ Mensaje enviado a '+to);
+}
+function sendReply(mid){
+  const inp=document.getElementById('ri-'+mid);if(!inp)return;
+  const body=inp.value.trim();if(!body)return;
+  const msgs=S.msgs[S.cur.u]||[];
+  const m=msgs.find(x=>x.id==mid);if(!m)return;
+  if(!m.replies)m.replies=[];
+  m.replies.push({from:S.cur.u,body,date:new Date().toISOString()});
+  sv();inp.value='';
+  const imEl=document.getElementById('im-'+mid);
+  if(imEl){
+    let reps=imEl.querySelector('.im-reps');
+    if(!reps){reps=document.createElement('div');reps.className='im-reps';imEl.querySelector('.im-rr').before(reps);}
+    reps.innerHTML=m.replies.map(r=>`<div class="rep-it"><span class="rep-fr ${r.from===ADMIN?'adm':'me'}">${esc(r.from)}:</span><span class="rep-tx">${esc(r.body)}</span></div>`).join('');
+  }
+  toast('✅ Respuesta enviada');
+}
+function replyAdmin(mid,to){
+  const inp=document.getElementById('air-'+mid);if(!inp)return;
+  const body=inp.value.trim();if(!body)return;
+  const m=S.adminInbox.find(x=>x.id==mid);
+  if(m){if(!m.replies)m.replies=[];m.replies.push({from:ADMIN,body,date:new Date().toISOString()});}
+  // Also deliver to user inbox
+  if(!S.msgs[to])S.msgs[to]=[];
+  S.msgs[to].push({id:Date.now(),from:ADMIN,body,date:new Date().toISOString(),read:false,replies:[]});
+  sv();inp.value='';toast('✉ Respuesta enviada a '+to);
+}
+
+/* === DELETE USER === */
+function oDel(u){S.delUCtx=u;document.getElementById('du-nm').textContent=u;document.getElementById('du-rsn').value='';openM('delu');}
+function doDelUser(){
+  const u=S.delUCtx;if(!u)return;
+  const rsn=document.getElementById('du-rsn').value.trim()||'Tu cuenta ha sido eliminada por el administrador.';
+  S.deleted[u]=rsn;S.users=S.users.filter(x=>x.u!==u);delete S.msgs[u];
+  sv();closeM('delu');buildPP();toast('🗑 Usuario '+u+' eliminado');
+}
+
+/* === MAINTENANCE === */
+function toggleMaint(){
+  if(!isAdm())return;
+  S.maint=!S.maint;sv();
+  const btn=document.getElementById('maint-btn');
+  if(btn)btn.textContent=S.maint?'✅ Desactivar Mantenimiento':'🔧 Activar Mantenimiento';
+  toast(S.maint?'🔧 Mantenimiento activado':'✅ Plataforma reactivada');
+}
+function saveMMsg(){
+  const t=document.getElementById('mm-txt').value.trim();
+  if(t){S.maintMsg=t;sv();}
+  closeM('mmsg');toast('✅ Mensaje guardado');
+}
+
+/* === CONTENT EDITING === */
+function hImg(inp,iId,pId){
+  if(!inp.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const fi=document.getElementById(iId),pr=document.getElementById(pId);
+    if(fi)fi.value=e.target.result;
+    if(pr){pr.src=e.target.result;pr.style.display='block';}
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+
+// ARTICLES
+function oAddArt(sec){
+  S.artCtx={sec,id:null};
+  document.getElementById('art-mt').textContent='+ Nuevo Artículo';
+  ['a-ttl','a-body','a-cap'].forEach(x=>document.getElementById(x).value='');
+  const ai=document.getElementById('a-img'),ap=document.getElementById('a-ip');
+  ai.value='';ap.src='';ap.style.display='none';
+  openM('art');
+}
+function oEditArt(sec,id){
+  const a=S[sec].find(x=>x.id===id);if(!a)return;
+  S.artCtx={sec,id};
+  document.getElementById('art-mt').textContent='✏ Editar Artículo';
+  document.getElementById('a-ttl').value=a.title;document.getElementById('a-body').value=a.body;
+  document.getElementById('a-img').value=a.img||'';document.getElementById('a-cap').value=a.cap||'';
+  const ap=document.getElementById('a-ip');
+  if(a.img){ap.src=a.img;ap.style.display='block';}else ap.style.display='none';
+  openM('art');
+}
+function saveArt(){
+  const ttl=document.getElementById('a-ttl').value.trim(),body=document.getElementById('a-body').value.trim();
+  const img=document.getElementById('a-img').value.trim(),cap=document.getElementById('a-cap').value.trim();
+  if(!ttl||!body){toast('⚠ Título y contenido son obligatorios');return;}
+  const{sec,id}=S.artCtx;
+  if(id){const i=S[sec].findIndex(x=>x.id===id);S[sec][i]={...S[sec][i],title:ttl,body,img,cap};}
+  else S[sec].push({id:Date.now(),title:ttl,body,img,cap});
+  sv();rArts(sec);closeM('art');toast('✅ Artículo guardado');
+}
+
+// PSYCH
+function oAddPsy(){S.psyCtx=null;document.getElementById('psy-mt').textContent='+ Nueva Sección';['p-ico','p-ttl','p-body'].forEach(x=>document.getElementById(x).value='');openM('psy');}
+function oEditPsy(id){
+  const c=S.psy.find(x=>x.id===id);if(!c)return;
+  S.psyCtx=id;
+  document.getElementById('psy-mt').textContent='✏ Editar Sección';
+  document.getElementById('p-ico').value=c.icon;document.getElementById('p-ttl').value=c.title;document.getElementById('p-body').value=c.body;
+  openM('psy');
+}
+function savePsy(){
+  const ico=document.getElementById('p-ico').value.trim()||'📌',ttl=document.getElementById('p-ttl').value.trim(),body=document.getElementById('p-body').value.trim();
+  if(!ttl||!body){toast('⚠ Completa título y descripción');return;}
+  if(S.psyCtx){const i=S.psy.findIndex(x=>x.id===S.psyCtx);S.psy[i]={...S.psy[i],icon:ico,title:ttl,body};}
+  else S.psy.push({id:Date.now(),icon:ico,title:ttl,body});
+  sv();rPsy();closeM('psy');toast('✅ Guardado');
+}
+
+// BT
+function oAddBT(){
+  S.btCtx=null;document.getElementById('bt-mt').textContent='+ Nueva Operación';
+  ['b-pair','b-str','b-ana'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('b-res').value='win';
+  document.getElementById('b-img').value='';document.getElementById('b-ip').style.display='none';
+  openM('bt');
+}
+function oEditBT(id){
+  const c=S.bt.find(x=>x.id===id);if(!c)return;
+  S.btCtx=id;
+  document.getElementById('bt-mt').textContent='✏ Editar Operación';
+  document.getElementById('b-pair').value=c.pair;document.getElementById('b-str').value=c.strat;
+  document.getElementById('b-res').value=c.result;document.getElementById('b-ana').value=c.ana;
+  document.getElementById('b-img').value=c.img||'';
+  const bp=document.getElementById('b-ip');
+  if(c.img){bp.src=c.img;bp.style.display='block';}else bp.style.display='none';
+  openM('bt');
+}
+function saveBT(){
+  const pair=document.getElementById('b-pair').value.trim(),strat=document.getElementById('b-str').value.trim();
+  const result=document.getElementById('b-res').value,ana=document.getElementById('b-ana').value.trim();
+  const img=document.getElementById('b-img').value.trim();
+  if(!pair||!ana){toast('⚠ Par y análisis son obligatorios');return;}
+  if(S.btCtx){const i=S.bt.findIndex(x=>x.id===S.btCtx);S.bt[i]={...S.bt[i],pair,strat,result,ana,img};}
+  else S.bt.push({id:Date.now(),pair,strat,result,ana,img});
+  sv();rBT();closeM('bt');toast('✅ Guardado');
+}
+
+// NEWS
+function saveNews(){
+  const ttl=document.getElementById('nw-ttl').value.trim(),body=document.getElementById('nw-body').value.trim();
+  const img=document.getElementById('nw-img').value.trim();
+  if(!ttl||!body){toast('⚠ Título y contenido obligatorios');return;}
+  S.news.push({id:Date.now(),title:ttl,body,img,date:new Date().toISOString(),readBy:[]});
+  sv();rNews();closeM('news');
+  ['nw-ttl','nw-body','nw-img'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('nw-ip').style.display='none';
+  toast('📡 Noticia publicada');
+  if(isAdm())buildPP();
+}
+
+/* === CODE EXPORT === */
+function openCode(){
+  const ta=document.getElementById('code-ta');
+  ta.value=document.documentElement.outerHTML;
+  openM('code');
+}
+function dlCode(){
+  const c=document.getElementById('code-ta').value||document.documentElement.outerHTML;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([c],{type:'text/html'}));
+  a.download='forexelite.html';a.click();
+  toast('⬇ Descargando forexelite.html');
+}
+function cpCode(){
+  const c=document.getElementById('code-ta').value||document.documentElement.outerHTML;
+  navigator.clipboard.writeText(c).then(()=>toast('📋 Código copiado')).catch(()=>toast('⚠ Selecciona y copia manualmente'));
+}
+function delSite(){
+  ['fe_us','fe_cu','fe_te','fe_in','fe_ps','fe_bt','fe_ma','fe_mm','fe_ms','fe_ai','fe_nw','fe_dl','fe_hw','fe_rl'].forEach(k=>localStorage.removeItem(k));
+  closeM('del');toast('🗑 Datos eliminados');
+}
+
+/* === TOAST === */
+let _t;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_t);_t=setTimeout(()=>el.classList.remove('on'),3100);}
+
+/* === HELPERS === */
+function s2(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+
+/* === TICKER (SOLO FOREX — Datos en tiempo real vía API gratuita) === */
+// Pares forex puros: no BTC, no índices, no commodities no-forex
+const FOREX_PAIRS=[
+  {label:'EUR/USD',base:'EUR',quote:'USD',decimals:4},
+  {label:'GBP/USD',base:'GBP',quote:'USD',decimals:4},
+  {label:'USD/JPY',base:'USD',quote:'JPY',decimals:2},
+  {label:'USD/CHF',base:'USD',quote:'CHF',decimals:4},
+  {label:'AUD/USD',base:'AUD',quote:'USD',decimals:4},
+  {label:'USD/CAD',base:'USD',quote:'CAD',decimals:4},
+  {label:'NZD/USD',base:'NZD',quote:'USD',decimals:4},
+  {label:'EUR/GBP',base:'EUR',quote:'GBP',decimals:4},
+  {label:'EUR/JPY',base:'EUR',quote:'JPY',decimals:2},
+  {label:'GBP/JPY',base:'GBP',quote:'JPY',decimals:2},
+  {label:'EUR/CHF',base:'EUR',quote:'CHF',decimals:4},
+  {label:'AUD/JPY',base:'AUD',quote:'JPY',decimals:2},
+  {label:'EUR/AUD',base:'EUR',quote:'AUD',decimals:4},
+  {label:'GBP/CHF',base:'GBP',quote:'CHF',decimals:4},
+  {label:'CAD/JPY',base:'CAD',quote:'JPY',decimals:2},
+  {label:'CHF/JPY',base:'CHF',quote:'JPY',decimals:2},
+];
+
+let tkRates={},tkPrices={},tkLoaded=false;
+
+async function fetchForex(){
+  try{
+    // open.er-api.com: free, no key, CORS enabled, updates hourly
+    const r=await fetch('https://open.er-api.com/v6/latest/USD');
+    const d=await r.json();
+    if(d.rates){
+      tkRates=d.rates;
+      computeForexPrices();
+      tkLoaded=true;
+      buildTicker(true);
+      console.log('ForexElite: Precios Forex cargados desde API (actualización horaria)');
+    }
+  }catch(err){
+    console.log('ForexElite: API no disponible, usando precios estimados');
+    buildTicker(false);
+  }
+}
+
+function computeForexPrices(){
+  // rates from open.er-api: 1 USD = X currency
+  const r=tkRates;
+  const get=(base,quote)=>{
+    // cross rate: how many quote per 1 base
+    if(base==='USD')return r[quote]||1;
+    if(quote==='USD')return r[base]?1/r[base]:1;
+    return (r[base]&&r[quote])?(r[quote]/r[base]):null;
+  };
+  FOREX_PAIRS.forEach(p=>{
+    const val=get(p.base,p.quote);
+    if(val){
+      tkPrices[p.label]={price:val,prev:val};
+    }
+  });
+}
+
+// Fallback prices (April 2026 estimates)
+const FALLBACK={
+  'EUR/USD':1.0432,'GBP/USD':1.2548,'USD/JPY':156.82,'USD/CHF':0.9118,
+  'AUD/USD':0.6218,'USD/CAD':1.4392,'NZD/USD':0.5648,'EUR/GBP':0.8319,
+  'EUR/JPY':163.71,'GBP/JPY':196.48,'EUR/CHF':0.9512,'AUD/JPY':97.55,
+  'EUR/AUD':1.6775,'GBP/CHF':1.1432,'CAD/JPY':108.96,'CHF/JPY':171.99
+};
+
+function initTicker(){
+  // Set fallback prices first so ticker shows immediately
+  FOREX_PAIRS.forEach(p=>{tkPrices[p.label]={price:FALLBACK[p.label]||1,prev:FALLBACK[p.label]||1};});
+  buildTicker(false);
+  // Fetch real prices
+  fetchForex();
+  // Refresh every 60 seconds
+  setInterval(fetchForex,60000);
+  // Micro-movements every 2s to look live
+  setInterval(simulateMicro,2000);
+}
+
+function simulateMicro(){
+  FOREX_PAIRS.forEach(p=>{
+    if(!tkPrices[p.label])return;
+    const cur=tkPrices[p.label].price;
+    const move=(Math.random()-.5)*cur*.0003;
+    tkPrices[p.label].prev=cur;
+    tkPrices[p.label].price=cur+move;
+  });
+  updateTickerDOM();
+}
+
+function buildTicker(live){
+  const track=document.getElementById('tk');
+  if(!track)return;
+  // Build one full set, then duplicate for seamless loop
+  const items=FOREX_PAIRS.map(p=>{
+    const pr=tkPrices[p.label];
+    const val=pr?pr.price.toFixed(p.decimals):FALLBACK[p.label]?.toFixed(p.decimals)||'–';
+    const prev=pr?pr.prev:null;
+    const up=prev?pr.price>=prev:true;
+    const chg=prev&&prev>0?((pr.price-prev)/prev*100):0;
+    const sign=chg>=0?'+':''
+    return`<span class="tk-i" data-pair="${p.label}"><span class="p">${p.label}</span><span class="tv">${val}</span><span class="${up?'u':'d'} tc">${sign}${chg.toFixed(3)}%</span></span>`;
+  }).join('');
+  track.innerHTML=items+items; // duplicate for seamless loop
+}
+
+function updateTickerDOM(){
+  document.querySelectorAll('.tk-i').forEach(el=>{
+    const pair=el.dataset.pair;
+    if(!pair||!tkPrices[pair])return;
+    const p=FOREX_PAIRS.find(x=>x.label===pair);if(!p)return;
+    const pr=tkPrices[pair];
+    const val=pr.price.toFixed(p.decimals);
+    const up=pr.price>=pr.prev;
+    const chg=pr.prev>0?((pr.price-pr.prev)/pr.prev*100):0;
+    const sign=chg>=0?'+':'';
+    const tv=el.querySelector('.tv');const tc=el.querySelector('.tc');
+    if(tv)tv.textContent=val;
+    if(tc){tc.textContent=`${sign}${chg.toFixed(3)}%`;tc.className=`${up?'u':'d'} tc`;}
+  });
+}
+
+/* === CANVAS === */
+function initCanvas(){
+  const cv=document.getElementById('hcv');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  function rz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+  rz();window.addEventListener('resize',rz);
+  let base=1.0435;
+  const candles=[];
+  for(let i=0;i<100;i++){
+    const o=base+(Math.random()-.5)*.0022,c=o+(Math.random()-.5)*.0028;
+    const h=Math.max(o,c)+Math.random()*.0009,l=Math.min(o,c)-Math.random()*.0009;
+    candles.push({o,c,h,l});base=c;
+  }
+  let off=0;
+  function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    const prices=candles.flatMap(c=>[c.h,c.l]);
+    const mn=Math.min(...prices),mx=Math.max(...prices),rng=mx-mn||.001;
+    const toY=p=>H*.1+(H*.78)*(1-(p-mn)/rng);
+    const cw=9,sp=15;
+    candles.forEach((c,i)=>{
+      const x=i*sp-off+W*.06;
+      if(x<-11||x>W+11)return;
+      const up=c.c>=c.o,col=up?'rgba(0,200,150,.6)':'rgba(255,69,96,.6)';
+      ctx.strokeStyle=col;ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(x,toY(c.h));ctx.lineTo(x,toY(c.l));ctx.stroke();
+      ctx.fillStyle=col;
+      const y1=toY(Math.max(c.o,c.c)),y2=toY(Math.min(c.o,c.c));
+      ctx.fillRect(x-cw/2,y1,cw,Math.max(y2-y1,1));
+    });
+    const wn=14;ctx.strokeStyle='rgba(240,165,0,.28)';ctx.lineWidth=1.3;ctx.beginPath();
+    candles.forEach((c,i)=>{
+      if(i<wn)return;
+      const avg=candles.slice(i-wn,i).reduce((s,x)=>s+x.c,0)/wn;
+      const x=i*sp-off+W*.06;
+      i===wn?ctx.moveTo(x,toY(avg)):ctx.lineTo(x,toY(avg));
+    });
+    ctx.stroke();
+    off+=.25;
+    if(off>sp){
+      off-=sp;const last=candles[candles.length-1];
+      const no=last.c,nc=no+(Math.random()-.5)*.003;
+      candles.push({o:no,c:nc,h:Math.max(no,nc)+Math.random()*.001,l:Math.min(no,nc)-Math.random()*.001});
+      candles.shift();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* === SCROLL SPY === */
+function initScrollSpy(){
+  const secs=document.querySelectorAll('section:not(#hero)');
+  const lks=document.querySelectorAll('#nb-links a[data-s]');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;lks.forEach(l=>l.classList.toggle('act',l.dataset.s===id));}});
+  },{threshold:.2});
+  secs.forEach(s=>obs.observe(s));
+}
+
+/* === FIU === */
+function initFIU(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});
+  },{threshold:.07});
+  document.querySelectorAll('.fiu:not(.vis)').forEach(el=>obs.observe(el));
+}
+
+/* === COUNTER === */
+function animCnt(){
+  const cnt=(el,t)=>{let n=0;const s=t/55;const iv=setInterval(()=>{n=Math.min(n+s,t);el.textContent=Math.floor(n).toLocaleString('es-ES');if(n>=t)clearInterval(iv);},17);};
+  setTimeout(()=>{
+    const u=document.getElementById('h-u'),se=document.getElementById('h-s');
+    if(u)cnt(u,S.users.length+247);
+    if(se)cnt(se,S.bt.length*182+1843);
+  },700);
+}
+
+/* === BOOTSTRAP === */
+init();
+</script>
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║          ZONA PARA FUTURAS ACTUALIZACIONES              ║
+     ║  Pega aquí el código nuevo que te dé Claude            ║
+     ║  justo antes de cerrar </body>                         ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+
+
+
+</body></html>
